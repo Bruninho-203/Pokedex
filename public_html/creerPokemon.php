@@ -11,7 +11,7 @@ $bdd = connectBD();
 $chemin = 0;
 $affiche_lien = affiche_lien($chemin);
 $cheminCategorie = './Categorie.php';
-$cheminSupprime = './supprimerPokemon.php'; 
+$cheminSupprime = './supprimerPokemon.php';
 $cheminCreer = './creerPokemon.php';
 
 if (isset($_SESSION['conn']) && $_SESSION['conn']) {
@@ -32,11 +32,13 @@ if (isset($_REQUEST["ajoutPokemon"])) {
     $nom_pokemon = $_REQUEST["nom_pokemon"];
     $_SESSION["nom_pokemon"] = $nom_pokemon;
 
-    if ($_FILES['img_pokemon']['error'][0] != 4) {
+    if ($_FILES['img_pokemon']['error'] != 4) {
+
         $chemin_tmp2 = $_FILES['img_pokemon']['tmp_name'];
-        $name2 = $_FILES['img_pokemon']['name'];
-        $new_chemin2 = "img/pokemon/$name2";
-        var_dump($_FILES);
+        $image = $_FILES['img_pokemon']['name'];
+        $ext = pathinfo($image, PATHINFO_EXTENSION);
+        $name2 = uniqid($_SESSION['pseudo']);
+        $new_chemin2 = "img/pokemon/" . $name2 . '.' . $ext;
 
         $message = 'Que des images !';
 
@@ -44,21 +46,20 @@ if (isset($_REQUEST["ajoutPokemon"])) {
         $extentions_approve = array('image/jpg', 'image/jpeg', 'image/png');
 
         for ($i = 0; $i < count($_FILES['img_pokemon']['type']); $i++) {
-
             for ($y = 0; $y < count($extentions_approve); $y++) {
-                echo 'files' . $_FILES['img_pokemon']['type'] . ' ';
-                echo 'extensions' . $extentions_approve[$y] . ' ';
                 if ($_FILES['img_pokemon']['type'] == $extentions_approve[$y]) {
                     move_uploaded_file($chemin_tmp2, $new_chemin2);
 
-                    $message = 'image uploader';
+                    echo $message = 'image uploader';
+                } else {
+                    echo $message = 'Image invalide';
                 }
             }
         }
     }
     $type = $_REQUEST["type"];
     $_SESSION["type"] = $type;
-	echo $type;
+    echo $type;
 
     $bdd = connectBD();
 
@@ -98,7 +99,7 @@ if (isset($_REQUEST["ajoutPokemon"])) {
         <script type="text/javascript" src="./bootstrap/js/bootstrap.min.js"></script>
     </head>
 
-     <body class="container">
+    <body class="container">
         <section class="row clearfix">
             <article class="col-md-12 column">
                 <header>  
@@ -115,15 +116,14 @@ if (isset($_REQUEST["ajoutPokemon"])) {
                                 <a class="navbar-brand" href="index.php">Pokedex</a>
                             </div>
                             <div id="navbar" class="navbar-collapse collapse">
-                                <?php 
-                                    if (isset($_SESSION['rang'])) 
-                                    {
-                                        echo autorisation_CRUD_pokemon($_SESSION['rang'], $chemin, $bdd);
-                                    }
+                                <?php
+                                if (isset($_SESSION['rang'])) {
+                                    echo autorisation_CRUD_pokemon($_SESSION['rang'], $chemin, $bdd);
+                                }
                                 ?>
-                            <ul class="nav navbar-nav navbar-right">
-                                <?php echo $affiche_lien; ?> 
-                            </ul>
+                                <ul class="nav navbar-nav navbar-right">
+                                    <?php echo $affiche_lien; ?> 
+                                </ul>
                             </div>                           
                         </div>
                     </nav>
@@ -133,14 +133,14 @@ if (isset($_REQUEST["ajoutPokemon"])) {
                         Pokedex
                     </h1>
                     <fieldset>
-                         <legend>Ajouter un pokemon</legend>
+                        <legend>Ajouter un pokemon</legend>
                         <form method="post" action="#" enctype="multipart/form-data">
                             <p><label>Nom</label> : <input type="text" name="nom_pokemon" required/></p>
-                            <p><label>Image</label> : <input type="file" name="img_pokemon"/></p>
+                            <p><label>Image</label> : <input type="file" name="img_pokemon" accept="image/*"/></p>
                             <p><label for="type">De quel catégorie est le pokemon?</label>
 
                                 <?php
-                                affiche_categorie_option(recupere_categorie($bdd), $bdd, -1);
+                                                                affiche_categorie_option(recupere_categorie($bdd), $bdd, -1);
                                 echo'</p>';
                                 ?>
 

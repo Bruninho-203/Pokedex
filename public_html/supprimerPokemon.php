@@ -22,6 +22,10 @@ if (isset($_SESSION['conn']) && $_SESSION['conn']) {
 if (isset($_REQUEST['message'])) {
     echo $_REQUEST['message'];
 }
+
+if (isset($_REQUEST['supprimerPokemon'])){
+    header("Location: ./supprimerPokemon.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -97,11 +101,11 @@ if (isset($_REQUEST['message'])) {
 
                     for ($i = 0; $i < count($affiche_pokemon); $i++) {
                         echo '<ul>'
-                        . '<li>' . $affiche_pokemon[$i][1]
+                        . '<li>' . $affiche_pokemon[$i]["Nom"]
                         . '<label>'
                         . '<form method="post" action="#">'
                         . '<input type="submit" name="supprimerPokemon" value="X">'
-                        . '<input type="hidden" name="idPokemonCachee" value=' . $affiche_pokemon[$i][0] . '>'
+                        . '<input type="hidden" name="idPokemonCachee" value=' . $affiche_pokemon[$i]["idPokemon"] . '>'
                         . '</form>'
                         . '</label>'
                         . '</li>'
@@ -111,8 +115,12 @@ if (isset($_REQUEST['message'])) {
                     if (isset($_REQUEST['supprimerPokemon'])) {
 
                         $idPokemon = $_REQUEST['idPokemonCachee'];
-                        debug($idPokemon);
-                        supprimerPokemon($idPokemon, $bdd);
+                        $imageName = getPokemonImageName($idPokemon, $bdd);
+                        if(supprimerPokemon($idPokemon, $bdd)) {
+                            unlink($imageName);    
+                        }
+                        
+                        
                     }
                     ?>
                 </section>

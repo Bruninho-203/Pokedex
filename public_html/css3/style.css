@@ -13,20 +13,19 @@ and open the template in the editor.
 	display: compact;
 	
 }
-.contener-type
+.ligne
 {
     width: 80%;
-    height: 37em;
+    height: 10em;
     //background-color: yellow;
     margin-left: 6em;
+    margin-top: 2.4em;
     text-align: center;
-    float:left;
-    overflow:auto;
 }
 .colonnes
 {
     width: 33%;
-    height: 12em;
+    height: 5em;
     float: left;
     //background-color: red;
     text-align: center;
