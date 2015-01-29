@@ -1,0 +1,44 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 18 sept. 2014, 08:13:19
+    Author     : DACUNA Jordan, SANTOS Bruno
+*/
+.contener
+{
+	background-repeat: no-repeat;
+	display: compact;
+	
+}
+.contener-type
+{
+    width: 80%;
+    height: 37em;
+    //background-color: yellow;
+    margin-left: 6em;
+    text-align: center;
+    float:left;
+    overflow:auto;
+}
+.colonnes
+{
+    width: 33%;
+    height: 12em;
+    float: left;
+    //background-color: red;
+    text-align: center;
+    
+}
+.ImgagePokemon
+{
+    width: 3em;
+    height: 4em;
+}
+
+.top-buffer {
+    margin: 6em;
+}
+
