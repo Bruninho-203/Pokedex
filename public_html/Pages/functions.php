@@ -58,9 +58,8 @@ function connexion($db_name, $host, $user, $pwd) {
     return $bdd;
 }
 
-//compte le nombre d'utilisateur
 function count_nb_user($bdd) {
-    $request = $bdd->query("SELECT count(pseudo) FROM utilisateurs");
+    $request = $bdd->query("select count(pseudo) from utilisateurs");
     $request = $request->fetchAll();
     return $request[0][0];
 }
@@ -70,19 +69,19 @@ function login_connection($users, $password, $bdd) {
 
     $nb_entite = count_nb_user($bdd);
 
-    $request_pseudo = $bdd->query("SELECT Pseudo FROM utilisateurs");
+    $request_pseudo = $bdd->query("select Pseudo from utilisateurs");
     $request_pseudo = $request_pseudo->fetchAll();
 
-    $request_mail = $bdd->query("SELECT Email FROM utilisateurs");
+    $request_mail = $bdd->query("select Email from utilisateurs");
     $request_mail = $request_mail->fetchAll();
 
-    $request_pwd = $bdd->query("SELECT Mdp FROM utilisateurs");
+    $request_pwd = $bdd->query("select Mdp from utilisateurs");
     $request_pwd = $request_pwd->fetchAll();
 
-    $request_id = $bdd->query("SELECT idUtilisateur FROM utilisateurs");
+    $request_id = $bdd->query("select idUtilisateur from utilisateurs");
     $request_id = $request_id->fetchAll();
-    
-    
+
+
     $request_rang = $bdd->query("SELECT idRang FROM utilisateurs order by idUtilisateur");
     $request_rang = $request_rang->fetchAll();
 
@@ -94,28 +93,29 @@ function login_connection($users, $password, $bdd) {
         $data_pwd = $request_pwd[$i][0];
         $data_rang = $request_rang[$i][0];
 
-        if (($users == $data_user || $users == $data_mail ) && $password == $data_pwd) {    
+        if (($users == $data_user || $users == $data_mail ) && $password == $data_pwd) {
             $_SESSION['ID'] = $request_id[$i][0];
-            $_SESSION['rang'] = $data_rang; 
+            $_SESSION['rang'] = $data_rang;
             $return = true;
         }
     }
+
     return $return;
 }
 
-/* * *************************************************************************** Ajoute personne dans la base                         ******** */
+/* * ******           Ajoute personne dans la base                         ******** */
 
 function ajout_personne($Nom, $Prenom, $MotDePasse, $Pseudo, $Email, $bdd) {
     $ajout = $bdd->prepare('insert into utilisateurs(Nom, Prenom,Mdp, Pseudo, idRang, Email) values("' . $Nom . '","' . $Prenom . '","' . $MotDePasse . '","' . $Pseudo . '","1","' . $Email . '")');
-    $ajout->execute();                  
+    $ajout->execute();
     return $bdd->lastInsertID();
 }
 
-/*   *** * * * Message pour l'utilisateur */
+/* * ** * * * Message pour l'utilisateur */
+
 function Statut() {
-     
-    if (isset($_SESSION["pseudo"]) !== NULL)
-        {
+
+    if (isset($_SESSION["pseudo"]) !== NULL) {
         echo 'Bienvenue ' . $_SESSION['pseudo'];
     }
 
@@ -123,7 +123,6 @@ function Statut() {
         echo 'Bonjour étranger';
     }
 }
-
 /* * *************************************************************************** Type ******************************************** */
 //Récupération des données de la table type. Ex: 1, Feu, img/feu.png
 function recupere_categorie($bdd) {
@@ -143,26 +142,45 @@ function affiche_categorie($array)
                     . '<img src="' . $array[$i]["cheminImage"] . '"alt="Icone catégorie"/>'
                 . '</a>'            
             . '</article>  '; 
-    }
+			    }
 }
 
-//Récupère la liste des pokemon dont nous avons préalablement choisi le type
+/* * ************************ Pokemon CATEGORIE ******************************************** */
+
+
+function recupere_categorie($bdd) {
+    $request = $bdd->query("SELECT NomType, cheminImage, idType FROM type");
+    return $request->fetchAll();
+}
+
 function recupere_categorie_liste($bdd, $idType) {
     $request = $bdd->query('SELECT Nom, cheminImage, pokemon.idPokemon FROM pokemon LEFT JOIN appartenir ON pokemon.idPokemon = appartenir.idPokemon WHERE idType=' . $idType);
     return $request->fetchAll();
 }
-//Afficher la liste de pokemon dont nous avons récupéré préalablement les informations dans la base
-function affiche_categorie_liste($array) 
-{
-    $i = $ligne = count($array);
+
+
+function affiche_categorie_liste($array) {
+    //debug($array);
+
+     $i = $ligne = count($array);
+    //debug($i);
     echo '<article><ul>';
-    for ($y = 0; $y < $i; $y++) 
-    {         
-        echo '<li><a href="../../ModifierPokemon.php?id='. $array[$y][2].'">'. $array[$y]['Nom'] .' <img class="ImgagePokemon" src="../../' .$array[$y]["cheminImage"]. '"alt="Pokemon"/></a></li>';
-        
+
+     for ($y = 0; $y < $i; $y++) 
+     {         
+         echo '<li><a href="../../ModifierPokemon.php?id='. $array[$y][2].'">'. $array[$y]['Nom'] .' <img class="ImgagePokemon" src="../../' .$array[$y]["cheminImage"]. '"alt="Pokemon"/></a></li>';
+         
     }    
     echo '</ul></article>';
+    }   
 }
+
+function recupere_categorie_aside($bdd, $nomtype) {
+    $request = $bdd->query("SELECT NomType, cheminImage FROM type where NomType='" . $nomtype . "' ");
+    return $request->fetchAll();
+
+	
+
 //Affiche une image dans un aside pour montrer dans quelle catégorie nous sommes
 function affiche_categorie_aside($array, $nomtype) 
 {
@@ -173,24 +191,26 @@ function affiche_categorie_aside($array, $nomtype)
         {
             echo '<img class="ImgagePokemon" src="../../' .$array[$i]["cheminImage"]. '"alt="Catégorie"/>';    
         }           
-    }    
+    } 
+
+//*************************  Modification
+function recupere_pokemon_modification($bdd, $idPokemon) {
+    $request = $bdd->query("SELECT Nom, cheminImage FROM pokemon WHERE idPokemon =" . $idPokemon);
+    return $request->fetchAll();
 }
 
-//****************************************************************************** Modification
-//récuperer le type d'un pokemon d'après son ID 
-function recupere_type_pokemon_modification($bdd, $idPokemon) 
-{
-    $request = $bdd->query("SELECT NomType FROM type natural join appartenir WHERE idPokemon =". $idPokemon);
+function recupere_type_pokemon_modification($bdd, $idPokemon) {
+    $request = $bdd->query("SELECT NomType FROM type natural join appartenir WHERE idPokemon =" . $idPokemon);
     return $request->fetchAll();
     echo $request;
 }
-//Donne l'ID du type avec son nom
-function donne_idType_avec_nomType($bdd, $nomType)
-{
-    $request = $bdd->query('SELECT idType FROM type WHERE NomType="'.$nomType.'"');
+
+function donne_idType_avec_nomType($bdd, $nomType) {
+    $request = $bdd->query('SELECT idType FROM type WHERE NomType="' . $nomType . '"');
     return $request->fetchAll();
-    echo $request;   
+    echo $request;
 }
+
 //Affiche les informations du pokemon choisi pour une modification
 function affiche_pokemon($arrayPokemon, $idPokemon)
 {
@@ -198,22 +218,23 @@ function affiche_pokemon($arrayPokemon, $idPokemon)
     for ($i = 0; $i < $ligne; $i++) 
     {     
         if ($arrayPokemon[$i]["idPokemon"] == $idPokemon)
-        {
-    echo '<article>
-            <form method="post" action="#">
-                <p>Modifier les informations de votre pokemon</p>
+        { echo '<article>
+             <form method="post" action="#">
+                 <p>Modifier les informations de votre pokemon</p>
                 <p><label>Nom</label> : <input type="text" name="nom_pokemon" placeholder="'.$arrayPokemon[$i]["Nom"].'" required/></p>
                 <p><label>Image</label> : <input type="file" name="image_pokemon"/><img class="ImgagePokemon" src="'.$arrayPokemon[$i]["cheminImage"].'" alt="Image du pokemon"/></p>
-                <p><label for="type">De quel catégorie est le pokemon?</label></p>';
+
+                 <p><label for="type">De quel catégorie est le pokemon?</label></p>';
         }     
     }
-}
+ }
+
 //affiche une liste déroulante avec les différents type. De base son type est choisi
 function affiche_categorie_option($array, $bdd, $idPokemon)
 {   
     $type=recupere_type_pokemon_modification($bdd, $idPokemon);  
     echo '<p><select name="type" id="select_type">';  
-    $i = count($array);
+     $i = count($array);
     
     while ($i > -1) 
     {
@@ -222,27 +243,25 @@ function affiche_categorie_option($array, $bdd, $idPokemon)
             echo '<article><option value="' . $array[$i]["NomType"] . '" selected>' . $array[$i]["NomType"] . '</option>';     
         }  else {
             echo '<article><option value="' . $array[$i]["NomType"] . '">' . $array[$i]["NomType"] . '</option>';
-        }
-        $i--;        
-    } 
+        $i--;
+    }
+ 
+     echo '</article></select></p>' 
+			. '<p><label><input class="button grow-rotate" type="submit" name="modifier" value="Modifier Pokemon"/></label></p>'
+			. '<input type="hidden" name="idPokemonCachee" value=' . $_REQUEST['id'] . '>'
+			. '</form></article>';
+ }
 
-    echo '</article></select></p>'
-         . '<p><label><input class="button grow-rotate" type="submit" name="modifier" value="Modifier Pokemon"/></label></p>'
-        . '<input type="hidden" name="idPokemonCachee" value=' . $_REQUEST['id'] . '>'
-        . '</form></article>';    
-}
-//Met à jour les informations modifiées dans la base de données
-function modifie_pokemon($idPokemon, $nom, $cheminImage, $type, $bdd)
-{    
-    $request = 'UPDATE pokemon SET idPokemon="'.$idPokemon.'",Nom="'.$nom.'",cheminImage="'.$cheminImage.'" WHERE idPokemon="'.$idPokemon.'" ';
+function modifie_pokemon($idPokemon, $nom, $cheminImage, $type, $bdd) {
+    $request = 'UPDATE pokemon SET idPokemon="' . $idPokemon . '",Nom="' . $nom . '",cheminImage="' . $cheminImage . '" WHERE idPokemon="' . $idPokemon . '" ';
     // Prepare statement
     $statement = $bdd->prepare($request);
     // execute the query
     $statement->execute();
     // echo a message to say the UPDATE succeeded
     echo $statement->rowCount() . " Information records UPDATED successfully || ";
-    
-    $request = 'UPDATE appartenir SET idType="'.$type.'" WHERE idPokemon="'.$idPokemon.'"';
+
+    $request = 'UPDATE appartenir SET idType="' . $type . '" WHERE idPokemon="' . $idPokemon . '"';
     // Prepare statement
     $statement = $bdd->prepare($request);
     // execute the query
@@ -250,63 +269,88 @@ function modifie_pokemon($idPokemon, $nom, $cheminImage, $type, $bdd)
     // echo a message to say the UPDATE succeeded
     echo $statement->rowCount() . " Type records UPDATED successfully ";
 }
-/******************************************************************************* Supprimer */
+
+/* * ******************************** Supprimer */
+
+
 //Récupere les informations des pokemons dans une liste : (id, nom, Chemin)
 function recupere_pokemon($bdd){
     $request = "SELECT idPokemon, Nom, cheminImage FROM pokemon order by idPokemon";
-    $statement = $bdd->query($request);
-    return $statement->fetchAll();    
-}
-//Supprime un pokemon choisi de la base de données
-function supprimerPokemon($idPokemon, $bdd) 
-{
-        $request = "DELETE FROM appartenir WHERE idPokemon=" . $idPokemon;
-        $bdd->exec($request);
-        $request = "DELETE FROM pokemon WHERE idPokemon=".$idPokemon;       
-        $bdd->exec($request);
-}
-/******************************************************************************* Liste déroulante menu  */ 
-//Affiche les types dans un menu déroulant
-function affiche_categorie_liste_deroulante($array, $TestChemin) 
-{
-    $affichage = "";
-    $ligne = count($array);
-    //debug($i);   
-    for ($i = 0; $i < $ligne; $i++) 
-    {          
-        if ($TestChemin == 0) 
-        {
-            $affichage .= '<li><a href="Pages/categorie/'. $array[$i]["NomType"].'.php">'. $array[$i]["NomType"].'</a></li>';
-        } elseif ($TestChemin == 1) 
-        {
-            $affichage .= '<li><a href="./'. $array[$i]["NomType"].'.php">'. $array[$i]["NomType"].'</a></li>';
-        } else 
-        {
-            $affichage .= '<li><a href="../categorie/'. $array[$i]["NomType"].'.php">'. $array[$i]["NomType"].'</a></li>';
-        }    
-    }
-   return $affichage;
 }
 
-/******************************************************************************* Créer un pokemon  */
-//Ajout d'un pokemon dans la base
-function ajouterPokemon($nom_pokemon, $img_pokemon,$type, $bdd )
-{
-    $request = ('INSERT INTO pokemon(Nom, cheminImage) values("'.$nom_pokemon.'", "'.$img_pokemon.'")');
+function getPokemonImageName($idPokemon, $bdd) {
+    $request = "SELECT cheminImage from pokemon where idPokemon =" . $idPokemon;
+    $statement = $bdd->query($request);
+    $result = $statement->fetch();
+    return $result[0];
+}
+
+function supprimerPokemon($idPokemon, $bdd) {
+    $request = "DELETE FROM pokemon WHERE idPokemon=" . $idPokemon;
+
+    return $bdd->exec($request);
+}
+
+/* * ********** Liste déroulante menu  */
+
+function affiche_categorie_liste_deroulante($array, $TestChemin) {
+    //debug($array);
+    $affichage = "";
+     $ligne = count($array);
+-    //debug($i);   
+-    for ($i = 0; $i < $ligne; $i++) 
+-    {          
+-        if ($TestChemin == 0) 
+-        {
+-            $affichage .= '<li><a href="Pages/categorie/'. $array[$i]["NomType"].'.php">'. $array[$i]["NomType"].'</a></li>';
+-        } elseif ($TestChemin == 1) 
+-        {
+-            $affichage .= '<li><a href="./'. $array[$i]["NomType"].'.php">'. $array[$i]["NomType"].'</a></li>';
+-        } else 
+-        {
+-            $affichage .= '<li><a href="../categorie/'. $array[$i]["NomType"].'.php">'. $array[$i]["NomType"].'</a></li>';
+-        } 
+    }
+    return $affichage;
+}
+
+/* * ********** Créer un pokemon  */
+
+function ajouterPokemon($nom_pokemon, $img_pokemon, $type, $bdd) {
+
+
+    $request = ('INSERT INTO pokemon(Nom, cheminImage) values("' . $nom_pokemon . '", "' . $img_pokemon . '")');
     $statement = $bdd->prepare($request);
     $statement->execute();
-   
+
     $id_pokemon = $bdd->lastInsertID();
     echo $id_pokemon;
-    
-    $request = ('INSERT INTO appartenir(idPokemon, idType) values ("'.$id_pokemon.'", "'.$type.'")');
+
+    $request = ('INSERT INTO appartenir(idPokemon, idType) values ("' . $id_pokemon . '", "' . $type . '")');
     $statement = $bdd->prepare($request);
     $statement->execute();
 
-return $bdd->lastInsertID(); 
-
+    return $bdd->lastInsertID();
 }
-/******************************************************************************* Privilège et droit */
+
+function recupereIDavecNomType($nom_type, $bdd) {
+    $request = $bdd->query('SELECT idType FROM type WHERE NomType=' . $nom_type);
+    return $request->fetchAll();
+    debug($request);
+}
+
+function affiche_categorie_option_creer($array) {
+    echo '<p><select name="type" id="select_type">';
+    $i = count($array);
+
+    while ($i > -1) {
+        echo '<article><option value="' . $array[$i][2] . '">' . $array[$i][0] . '</option>';
+        $i--;
+    }
+}
+
+/* * ********** Privilège et droit */
+
 //Contrôle sur l'activation des liens selon le statut de l'utilisateur (Connect/Disconnect)
 function affiche_lien($chemin) 
 {
@@ -333,61 +377,59 @@ function affiche_lien($chemin)
                 $affichage = "<a href='login.php'>Login</a><br/> <a href='inscription.php'>Inscription</a><br/>";
             } 
         }    
-     return $affichage;   
+     return $affichage;  
 }
-//Ajout d'autorisation pour pouvoir voir les liens et met les chemin à jour selon où l'utilisateur se trouve dans le fils d'Ariane
-function autorisation_CRUD_pokemon($rang,$chemin, $bdd) {
-    $liens = ''; 
-    if (isset($rang)){
-        if ( $rang == 1 ) {         
-                if ($chemin == 0) 
-                {
-                    $liens = '<ul class="nav navbar-nav">
+
+
+
+// If you are connected shows links
+function autorisation_CRUD_pokemon($rang, $chemin, $bdd) {
+    $liens = '';
+
+    if (isset($rang)) {
+        if ($rang == 1) {
+            if ($chemin == 0) {
+                $liens = '<ul class="nav navbar-nav">
                                 <li class="active">
                                     <a href="Categorie.php">Catégorie</a>
                                 </li>                   
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Type <span class="caret"></span></a>
                                     <ul class="dropdown-menu" role="menu">
-                                        '.affiche_categorie_liste_deroulante(recupere_categorie($bdd),$chemin).'                                                            
-                                    </ul>
-                                </li>   
-                            </ul>';  
-                    
-               } elseif ($chemin == 1) 
-                {
-                    $liens = '<ul class="nav navbar-nav">
-                                <li class="active">
-                                    <a href="../../Categorie.php">Catégorie</a>
-                                </li>                   
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Type <span class="caret"></span></a>
-                                    <ul class="dropdown-menu" role="menu">
-                                        '.affiche_categorie_liste_deroulante(recupere_categorie($bdd),$chemin).'                                                            
-                                    </ul>
-                                </li>   
-                            </ul>'; 
-
-                } else 
-                {
-                    $liens = '<ul class="nav navbar-nav">
-                                <li class="active">
-                                    <a href="../../Categorie.php">Catégorie</a>
-                                </li>                   
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Type <span class="caret"></span></a>
-                                    <ul class="dropdown-menu" role="menu">
-                                        '.affiche_categorie_liste_deroulante(recupere_categorie($bdd),$chemin).'                                                            
+                                        ' . affiche_categorie_liste_deroulante(recupere_categorie($bdd), $chemin) . '                                                            
                                     </ul>
                                 </li>   
                             </ul>';
-                   
-                }        
-        }elseif ($rang== 2) {
-        
-                if ($chemin == 0) 
-                {                     
-                    $liens = '<ul class="nav navbar-nav">
+            } elseif ($chemin == 1) {
+                $liens = '<ul class="nav navbar-nav">
+                                <li class="active">
+                                    <a href="../../Categorie.php">Catégorie</a>
+                                </li>                   
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Type <span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        ' . affiche_categorie_liste_deroulante(recupere_categorie($bdd), $chemin) . '                                                            
+                                    </ul>
+                                </li>   
+                            </ul>';
+            } else {
+                $liens = '<ul class="nav navbar-nav">
+                                <li class="active">
+                                    <a href="../../Categorie.php">Catégorie</a>
+                                </li>                   
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Type <span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        ' . affiche_categorie_liste_deroulante(recupere_categorie($bdd), $chemin) . '                                                            
+                                    </ul>
+                                </li>   
+                            </ul>';
+            }
+        } elseif ($rang == 2) {
+
+            if ($chemin == 0) {
+
+                $liens = '<ul class="nav navbar-nav">
                         <li class="active">
                             <a href="Categorie.php">Catégorie</a>
                         </li>
@@ -400,13 +442,12 @@ function autorisation_CRUD_pokemon($rang,$chemin, $bdd) {
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Type <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
-                                '.affiche_categorie_liste_deroulante(recupere_categorie($bdd),$chemin).'                                                               
+                                ' . affiche_categorie_liste_deroulante(recupere_categorie($bdd), $chemin) . '                                                               
                             </ul>
                         </li>   
-                    </ul>';   
-                } elseif ($chemin == 1) 
-                {
-                    $liens = '<ul class="nav navbar-nav">
+                    </ul>';
+            } elseif ($chemin == 1) {
+                $liens = '<ul class="nav navbar-nav">
                         <li class="active">
                             <a href="../../Categorie.php">Catégorie</a>
                         </li>
@@ -419,13 +460,12 @@ function autorisation_CRUD_pokemon($rang,$chemin, $bdd) {
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Type <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
-                                '.affiche_categorie_liste_deroulante(recupere_categorie($bdd),$chemin).'                                                               
+                                ' . affiche_categorie_liste_deroulante(recupere_categorie($bdd), $chemin) . '                                                               
                             </ul>
                         </li>   
-                    </ul>';  
-                } else 
-                {
-                    $liens = '<ul class="nav navbar-nav">
+                    </ul>';
+            } else {
+                $liens = '<ul class="nav navbar-nav">
                         <li class="active">
                             <a href="../../Categorie.php">Catégorie</a>
                         </li>
@@ -438,12 +478,13 @@ function autorisation_CRUD_pokemon($rang,$chemin, $bdd) {
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Type <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
-                                '.affiche_categorie_liste_deroulante(recupere_categorie($bdd),$chemin).'                                                               
+                                ' . affiche_categorie_liste_deroulante(recupere_categorie($bdd), $chemin) . '                                                               
                             </ul>
                         </li>   
-                    </ul>'; 
-                }    
-            }  
-    return $liens;
+                    </ul>';
+            }
+        }
+
+        return $liens;
     }
-}          
+}
