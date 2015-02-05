@@ -140,7 +140,7 @@ if (isset($_REQUEST["ajoutPokemon"])) {
                             <p><label for="type">De quel catégorie est le pokemon?</label>
 
                                 <?php
-                                                                affiche_categorie_option(recupere_categorie($bdd), $bdd, -1);
+                                affiche_categorie_option_creer(recupere_categorie($bdd), $bdd, -1);
                                 echo'</p>';
                                 ?>
 

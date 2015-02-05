@@ -123,75 +123,63 @@ function Statut() {
         echo 'Bonjour étranger';
     }
 }
+
 /* * *************************************************************************** Type ******************************************** */
+
 //Récupération des données de la table type. Ex: 1, Feu, img/feu.png
 function recupere_categorie($bdd) {
-    $query="SELECT idType, NomType, cheminImage FROM type";
+    $query = "SELECT idType, NomType, cheminImage FROM type";
     $sth = $bdd->query($query);
     $sth->execute();
-    
-    return $result= $sth->fetchAll();
+
+    return $result = $sth->fetchAll();
 }
+
 //Affiche les images des catégories
-function affiche_categorie($array) 
-{
-    for($i=count($array)-1; $i>-1; $i--)
-    {
+function affiche_categorie($array) {
+    for ($i = count($array) - 1; $i > -1; $i--) {
         echo '<article class="colonnes">'
-                . '<a href="Pages/categorie/' . $array[$i]["NomType"] . '.php" data-toggle="tooltip" data-original-title="'. $array[$i]["NomType"] .'">'
-                    . '<img src="' . $array[$i]["cheminImage"] . '"alt="Icone catégorie"/>'
-                . '</a>'            
-            . '</article>  '; 
-			    }
+        . '<a href="Pages/categorie/' . $array[$i]["NomType"] . '.php" data-toggle="tooltip" data-original-title="' . $array[$i]["NomType"] . '">'
+        . '<img src="' . $array[$i]["cheminImage"] . '"alt="Icone catégorie"/>'
+        . '</a>'
+        . '</article>  ';
+    }
 }
 
 /* * ************************ Pokemon CATEGORIE ******************************************** */
-
-
-function recupere_categorie($bdd) {
-    $request = $bdd->query("SELECT NomType, cheminImage, idType FROM type");
-    return $request->fetchAll();
-}
 
 function recupere_categorie_liste($bdd, $idType) {
     $request = $bdd->query('SELECT Nom, cheminImage, pokemon.idPokemon FROM pokemon LEFT JOIN appartenir ON pokemon.idPokemon = appartenir.idPokemon WHERE idType=' . $idType);
     return $request->fetchAll();
 }
 
-
 function affiche_categorie_liste($array) {
-    //debug($array);
+//debug($array);
 
-     $i = $ligne = count($array);
-    //debug($i);
+    $i = $ligne = count($array);
+//debug($i);
     echo '<article><ul>';
 
-     for ($y = 0; $y < $i; $y++) 
-     {         
-         echo '<li><a href="../../ModifierPokemon.php?id='. $array[$y][2].'">'. $array[$y]['Nom'] .' <img class="ImgagePokemon" src="../../' .$array[$y]["cheminImage"]. '"alt="Pokemon"/></a></li>';
-         
-    }    
+    for ($y = 0; $y < $i; $y++) {
+        echo '<li><a href="../../ModifierPokemon.php?id=' . $array[$y][2] . '">' . $array[$y]['Nom'] . ' <img class="ImgagePokemon" src="../../' . $array[$y]["cheminImage"] . '"alt="Pokemon"/></a></li>';
+    }
     echo '</ul></article>';
-    }   
 }
 
 function recupere_categorie_aside($bdd, $nomtype) {
     $request = $bdd->query("SELECT NomType, cheminImage FROM type where NomType='" . $nomtype . "' ");
     return $request->fetchAll();
-
-	
+}
 
 //Affiche une image dans un aside pour montrer dans quelle catégorie nous sommes
-function affiche_categorie_aside($array, $nomtype) 
-{
+function affiche_categorie_aside($array, $nomtype) {
     $ligne = count($array);
-    for ($i = 0; $i < $ligne; $i++) 
-    {     
-        if ($array[$i]["NomType"] == $nomtype)
-        {
-            echo '<img class="ImgagePokemon" src="../../' .$array[$i]["cheminImage"]. '"alt="Catégorie"/>';    
-        }           
-    } 
+    for ($i = 0; $i < $ligne; $i++) {
+        if ($array[$i]["NomType"] == $nomtype) {
+            echo '<img class="ImgagePokemon" src="../../' . $array[$i]["cheminImage"] . '"alt="Catégorie"/>';
+        }
+    }
+}
 
 //*************************  Modification
 function recupere_pokemon_modification($bdd, $idPokemon) {
@@ -212,70 +200,67 @@ function donne_idType_avec_nomType($bdd, $nomType) {
 }
 
 //Affiche les informations du pokemon choisi pour une modification
-function affiche_pokemon($arrayPokemon, $idPokemon)
-{
+function affiche_pokemon($arrayPokemon, $idPokemon) {
     $ligne = count($arrayPokemon);
-    for ($i = 0; $i < $ligne; $i++) 
-    {     
-        if ($arrayPokemon[$i]["idPokemon"] == $idPokemon)
-        { echo '<article>
+    for ($i = 0; $i < $ligne; $i++) {
+        if ($arrayPokemon[$i]["idPokemon"] == $idPokemon) {
+            echo '<article>
              <form method="post" action="#">
                  <p>Modifier les informations de votre pokemon</p>
-                <p><label>Nom</label> : <input type="text" name="nom_pokemon" placeholder="'.$arrayPokemon[$i]["Nom"].'" required/></p>
-                <p><label>Image</label> : <input type="file" name="image_pokemon"/><img class="ImgagePokemon" src="'.$arrayPokemon[$i]["cheminImage"].'" alt="Image du pokemon"/></p>
+                <p><label>Nom</label> : <input type="text" name="nom_pokemon" placeholder="' . $arrayPokemon[$i]["Nom"] . '" required/></p>
+                <p><label>Image</label> : <input type="file" name="image_pokemon"/><img class="ImgagePokemon" src="' . $arrayPokemon[$i]["cheminImage"] . '" alt="Image du pokemon"/></p>
 
-                 <p><label for="type">De quel catégorie est le pokemon?</label></p>';
-        }     
+                <p><label for="type">De quel catégorie est le pokemon?</label></p>';
+        }
     }
- }
+}
 
 //affiche une liste déroulante avec les différents type. De base son type est choisi
-function affiche_categorie_option($array, $bdd, $idPokemon)
-{   
-    $type=recupere_type_pokemon_modification($bdd, $idPokemon);  
-    echo '<p><select name="type" id="select_type">';  
-     $i = count($array);
-    
-    while ($i > -1) 
-    {
-        if ($type[0][0] == $array[$i]["NomType"])
-        {
-            echo '<article><option value="' . $array[$i]["NomType"] . '" selected>' . $array[$i]["NomType"] . '</option>';     
-        }  else {
+function affiche_categorie_option($array, $bdd, $idPokemon) {
+    $type = recupere_type_pokemon_modification($bdd, $idPokemon);
+    echo '<p><select name="type" id="select_type">';
+    $i = count($array);
+
+    while ($i > -1) {
+        if ($type[0][0] == $array[$i]["NomType"]) {
+            echo '<article><option value="' . $array[$i]["NomType"] . '" selected>' . $array[$i]["NomType"] . '</option>';
+            $i--;
+        } else {
             echo '<article><option value="' . $array[$i]["NomType"] . '">' . $array[$i]["NomType"] . '</option>';
-        $i--;
+            $i--;
+        }
     }
- 
-     echo '</article></select></p>' 
-			. '<p><label><input class="button grow-rotate" type="submit" name="modifier" value="Modifier Pokemon"/></label></p>'
-			. '<input type="hidden" name="idPokemonCachee" value=' . $_REQUEST['id'] . '>'
-			. '</form></article>';
- }
+
+    echo '</article></select></p>'
+    . '<p><label><input class="button grow-rotate" type="submit" name="modifier" value="Confirmer"/></label></p>'
+    . '<input type="hidden" name="idPokemonCachee" value=' . $_REQUEST['id'] . '>'
+    . '</form></article>';
+}
 
 function modifie_pokemon($idPokemon, $nom, $cheminImage, $type, $bdd) {
     $request = 'UPDATE pokemon SET idPokemon="' . $idPokemon . '",Nom="' . $nom . '",cheminImage="' . $cheminImage . '" WHERE idPokemon="' . $idPokemon . '" ';
-    // Prepare statement
+// Prepare statement
     $statement = $bdd->prepare($request);
-    // execute the query
+// execute the query
     $statement->execute();
-    // echo a message to say the UPDATE succeeded
+// echo a message to say the UPDATE succeeded
     echo $statement->rowCount() . " Information records UPDATED successfully || ";
 
     $request = 'UPDATE appartenir SET idType="' . $type . '" WHERE idPokemon="' . $idPokemon . '"';
-    // Prepare statement
+// Prepare statement
     $statement = $bdd->prepare($request);
-    // execute the query
+// execute the query
     $statement->execute();
-    // echo a message to say the UPDATE succeeded
+// echo a message to say the UPDATE succeeded
     echo $statement->rowCount() . " Type records UPDATED successfully ";
 }
 
 /* * ******************************** Supprimer */
 
-
 //Récupere les informations des pokemons dans une liste : (id, nom, Chemin)
-function recupere_pokemon($bdd){
-    $request = "SELECT idPokemon, Nom, cheminImage FROM pokemon order by idPokemon";
+function recupere_pokemon($bdd) {
+    $request = $bdd->query("SELECT idPokemon, Nom, cheminImage FROM pokemon order by idPokemon");
+    return $request->fetchAll();
 }
 
 function getPokemonImageName($idPokemon, $bdd) {
@@ -294,22 +279,18 @@ function supprimerPokemon($idPokemon, $bdd) {
 /* * ********** Liste déroulante menu  */
 
 function affiche_categorie_liste_deroulante($array, $TestChemin) {
-    //debug($array);
+//debug($array);
     $affichage = "";
-     $ligne = count($array);
--    //debug($i);   
--    for ($i = 0; $i < $ligne; $i++) 
--    {          
--        if ($TestChemin == 0) 
--        {
--            $affichage .= '<li><a href="Pages/categorie/'. $array[$i]["NomType"].'.php">'. $array[$i]["NomType"].'</a></li>';
--        } elseif ($TestChemin == 1) 
--        {
--            $affichage .= '<li><a href="./'. $array[$i]["NomType"].'.php">'. $array[$i]["NomType"].'</a></li>';
--        } else 
--        {
--            $affichage .= '<li><a href="../categorie/'. $array[$i]["NomType"].'.php">'. $array[$i]["NomType"].'</a></li>';
--        } 
+    $ligne = count($array);
+//debug($i);   
+    for ($i = 0; $i < $ligne; $i++) {
+        if ($TestChemin == 0) {
+            $affichage .= '<li><a href="Pages/categorie/' . $array[$i]["NomType"] . '.php">' . $array[$i]["NomType"] . '</a></li>';
+        } elseif ($TestChemin == 1) {
+            $affichage .= '<li><a href="./' . $array[$i]["NomType"] . '.php">' . $array[$i]["NomType"] . '</a></li>';
+        } else {
+            $affichage .= '<li><a href="../categorie/' . $array[$i]["NomType"] . '.php">' . $array[$i]["NomType"] . '</a></li>';
+        }
     }
     return $affichage;
 }
@@ -344,7 +325,7 @@ function affiche_categorie_option_creer($array) {
     $i = count($array);
 
     while ($i > -1) {
-        echo '<article><option value="' . $array[$i][2] . '">' . $array[$i][0] . '</option>';
+        echo '<article><option value="' . $array[$i][2] . '">' . $array[$i][1] . '</option>';
         $i--;
     }
 }
@@ -352,40 +333,33 @@ function affiche_categorie_option_creer($array) {
 /* * ********** Privilège et droit */
 
 //Contrôle sur l'activation des liens selon le statut de l'utilisateur (Connect/Disconnect)
-function affiche_lien($chemin) 
-{
-    $affichage = "";            
-        if ($chemin == 0) 
-        {
-            if (isset($_SESSION['connected']) && $_SESSION['connected']) {
-                $affichage = ' <br/><a href="./Pages/connection/disconnect.php" >Logout</a>';
-            }  else {
-                $affichage = "<a href='./Pages/connection/login.php'>Login</a><br/> <a href='./Pages/connection/inscription.php'>Inscription</a><br/>";
-            }   
-        } elseif ($chemin == 1) 
-        {
-            if (isset($_SESSION['connected']) && $_SESSION['connected']) {
-                $affichage  = ' <br/><a href="../connection/disconnect.php" >Logout</a>';
-            }else {
-                $affichage = "<a href='../connection/login.php'>Login</a><br/> <a href='../connection/inscription.php'>Inscription</a><br/>";
-            }   
-        } else 
-        {
-            if (isset($_SESSION['connected']) && $_SESSION['connected']) {
-                $affichage  = ' <br/><a href="./disconnect.php" >Logout</a>';
-            }else {
-                $affichage = "<a href='login.php'>Login</a><br/> <a href='inscription.php'>Inscription</a><br/>";
-            } 
-        }    
-     return $affichage;  
+function affiche_lien($chemin) {
+    $affichage = "";
+    if ($chemin == 0) {
+        if (isset($_SESSION['connected']) && $_SESSION['connected']) {
+            $affichage = ' <br/><a href="./Pages/connection/disconnect.php" >Logout</a>';
+        } else {
+            $affichage = "<a href='./Pages/connection/login.php'>Login</a><br/> <a href='./Pages/connection/inscription.php'>Inscription</a><br/>";
+        }
+    } elseif ($chemin == 1) {
+        if (isset($_SESSION['connected']) && $_SESSION['connected']) {
+            $affichage = ' <br/><a href="../connection/disconnect.php" >Logout</a>';
+        } else {
+            $affichage = "<a href='../connection/login.php'>Login</a><br/> <a href='../connection/inscription.php'>Inscription</a><br/>";
+        }
+    } else {
+        if (isset($_SESSION['connected']) && $_SESSION['connected']) {
+            $affichage = ' <br/><a href="./disconnect.php" >Logout</a>';
+        } else {
+            $affichage = "<a href='login.php'>Login</a><br/> <a href='inscription.php'>Inscription</a><br/>";
+        }
+    }
+    return $affichage;
 }
 
-
-
-// If you are connected shows links
+//Ajout d'autorisation pour pouvoir voir les liens et met les chemin à jour selon où l'utilisateur se trouve dans le fils d'Ariane
 function autorisation_CRUD_pokemon($rang, $chemin, $bdd) {
     $liens = '';
-
     if (isset($rang)) {
         if ($rang == 1) {
             if ($chemin == 0) {
@@ -428,7 +402,6 @@ function autorisation_CRUD_pokemon($rang, $chemin, $bdd) {
         } elseif ($rang == 2) {
 
             if ($chemin == 0) {
-
                 $liens = '<ul class="nav navbar-nav">
                         <li class="active">
                             <a href="Categorie.php">Catégorie</a>
@@ -484,7 +457,6 @@ function autorisation_CRUD_pokemon($rang, $chemin, $bdd) {
                     </ul>';
             }
         }
-
         return $liens;
     }
 }
