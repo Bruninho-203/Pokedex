@@ -62,7 +62,6 @@ if (isset($_REQUEST["ajoutPokemon"])) {
     echo $type;
 
     $bdd = connectBD();
-
     ajouterPokemon($nom_pokemon, $new_chemin2, $type, $bdd);
 }
 ?>

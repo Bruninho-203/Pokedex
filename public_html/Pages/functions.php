@@ -298,20 +298,31 @@ function affiche_categorie_liste_deroulante($array, $TestChemin) {
 /* * ********** Créer un pokemon  */
 
 function ajouterPokemon($nom_pokemon, $img_pokemon, $type, $bdd) {
+    
+// code pris sur internet : http://openclassrooms.com/courses/les-transactions-avec-mysql-et-pdo
+    try {
+        $bdd->beginTransaction();
 
+        $bdd->query('INSERT INTO pokemon(Nom, cheminImage) values("' . $nom_pokemon . '", "' . $img_pokemon . '")');
+        $id_pokemon = $bdd->lastInsertID();
+        echo $id_pokemon;
+        
+        $bdd->query('INSERT INTO appartenir(idPokemon, idType) values ("' . $id_pokemon . '", "' . $type . '")');
 
-    $request = ('INSERT INTO pokemon(Nom, cheminImage) values("' . $nom_pokemon . '", "' . $img_pokemon . '")');
-    $statement = $bdd->prepare($request);
-    $statement->execute();
+        $bdd->commit();
+        return $bdd->lastInsertID();
+    } catch (Exception $e) { //en cas d'erreur
+        //on annule la transation
+        $bdd->rollback();
 
-    $id_pokemon = $bdd->lastInsertID();
-    echo $id_pokemon;
+        //on affiche un message d'erreur ainsi que les erreurs
+        echo 'Tout ne s\'est pas bien passé, voir les erreurs ci-dessous<br />';
+        echo 'Erreur : ' . $e->getMessage() . '<br />';
+        echo 'N° : ' . $e->getCode();
 
-    $request = ('INSERT INTO appartenir(idPokemon, idType) values ("' . $id_pokemon . '", "' . $type . '")');
-    $statement = $bdd->prepare($request);
-    $statement->execute();
-
-    return $bdd->lastInsertID();
+        //on arrête l'exécution s'il y a du code après
+        exit();
+    }
 }
 
 function recupereIDavecNomType($nom_type, $bdd) {
@@ -325,7 +336,7 @@ function affiche_categorie_option_creer($array) {
     $i = count($array);
 
     while ($i > -1) {
-        echo '<article><option value="' . $array[$i][2] . '">' . $array[$i][1] . '</option>';
+        echo '<article><option value="' . $array[$i]["idType"] . '">' . $array[$i]["NomType"] . '</option>';
         $i--;
     }
 }
