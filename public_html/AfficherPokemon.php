@@ -94,7 +94,7 @@ if (isset($_REQUEST['message'])) {
                             Caracteristique du pokemon
                         </h1>
                         <?php 
-                            affiche_pokemon(recupere_pokemon($bdd), $_REQUEST['id']);                       
+                            affiche_pokemon(recupere_pokemon($bdd), recupere_pokemon_caracteristique($bdd), $_REQUEST['id']);                       
                         ?>
                 
                     </section>

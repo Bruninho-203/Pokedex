@@ -94,7 +94,7 @@ if (isset($_REQUEST['message'])) {
                             Modifier le pokemon
                         </h1>
                         <?php 
-                            affiche_pokemon_modification(recupere_pokemon($bdd), $_REQUEST['id']);
+                            affiche_pokemon_modification(recupere_pokemon($bdd), recupere_pokemon_caracteristique($bdd), $_REQUEST['id']);
                             affiche_categorie_option(recupere_categorie($bdd), $bdd, $_REQUEST['id'] );
                             
                             

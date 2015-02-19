@@ -181,24 +181,43 @@ function affiche_categorie_aside($array, $nomtype) {
     }
 }
 //*************************  Caracteristique pokemon
+//requete Sql pour récupérer un tableau avec les données des pokemons (Pv, Attaque, Defense, Attaque Spécial ,Defense Spécial, idPokemon)
+function recupere_pokemon_caracteristique($bdd) {
+    $request = $bdd->query("SELECT * FROM caracteristique ORDER BY idPokemon");
+    return $request->fetchAll();
+}
+
 //Affiche les informations du pokemon choisi
-function affiche_pokemon($arrayPokemon, $idPokemon) {
+function affiche_pokemon($arrayPokemon, $arrayStats, $idPokemon) {
     
     $ligne = count($arrayPokemon);
     for ($i = 0; $i < $ligne; $i++) {
         if ($arrayPokemon[$i]["idPokemon"] == $idPokemon) {
             echo '<article>
-             <form method="post" action="#">
-                <p><label>Nom</label> : '. $arrayPokemon[$i]["Nom"] . '</p>
-                <p><label>Image</label> : <img class="ImgagePokemon" src="' . $arrayPokemon[$i][2] . '" alt="Image de la categorie"/></p>
-                <p><label>Type</label> : '. $arrayPokemon[$i]["NomType"] . '<img class="ImgagePokemon" src="' . $arrayPokemon[$i]["cheminImage"] . '" alt="Image de la categorie"/></p>
-                <p><label>Taille</label> : '. $arrayPokemon[$i]["Taille"] . ' (m)</p>
-                <p><label>Taille</label> : '. $arrayPokemon[$i]["Poids"] . ' (kg)</p>
-                <a href="ModifierPokemon.php?id=' . $arrayPokemon[$i]["idPokemon"] . '">Modifier les informations</a>';
+                    <p><label>Nom</label> : '. $arrayPokemon[$i]["Nom"] . '</p>
+                    <p><label>Image</label> : <img class="ImgagePokemon" src="' . $arrayPokemon[$i][2] . '" alt="Image de la categorie"/></p>
+                    <p><label>Type</label> : '. $arrayPokemon[$i]["NomType"] . '<img class="ImgagePokemon" src="' . $arrayPokemon[$i]["cheminImage"] . '" alt="Image de la categorie"/></p>
+                    <p><label>Taille</label> : '. $arrayPokemon[$i]["Taille"] . ' (m)</p>
+                    <p><label>Taille</label> : '. $arrayPokemon[$i]["Poids"] . ' (kg)</p>';     
+        }
+    }
+    //debug($arrayStats);
+    $ligne = count($arrayStats);
+    for ($i = 0; $i < $ligne; $i++) {
+        if ($arrayStats[$i]["idPokemon"] == $idPokemon) {
+            
+            echo '
+                    <p><label>PV</label> : '. $arrayStats[$i]["PV"] . '</p>
+                    <p><label>Vitesse</label> : '. $arrayStats[$i]["Vitesse"] . '</p>
+                    <p><label>Attaque</label> : '. $arrayStats[$i]["Attaque"] . '</p>
+                    <p><label>Defense</label> : '. $arrayStats[$i]["Defense"] . '</p>
+                    <p><label>Attaque Spécial</label> : '. $arrayStats[$i][2] . '</p>
+                    <p><label>Defense Spécial</label> : '. $arrayStats[$i][3] . '</p>
+                    <a href="ModifierPokemon.php?id=' . $arrayStats[$i]["idPokemon"] . '">Modifier les informations</a>'
+                . '</article>';
         }
     }
 }
-
 
 //*************************  Modification
 function recupere_pokemon_modification($bdd, $idPokemon) {
@@ -219,7 +238,7 @@ function donne_idType_avec_nomType($bdd, $nomType) {
 }
 
 //Affiche les informations du pokemon choisi pour une modification
-function affiche_pokemon_modification($arrayPokemon, $idPokemon) {
+function affiche_pokemon_modification($arrayPokemon, $arrayStats, $idPokemon) {
     //debug($arrayPokemon);
     $ligne = count($arrayPokemon);
     for ($i = 0; $i < $ligne; $i++) {
@@ -231,6 +250,14 @@ function affiche_pokemon_modification($arrayPokemon, $idPokemon) {
                 <p><label>Image</label> : <input type="file" name="image_pokemon"/><img class="ImgagePokemon" src="' . $arrayPokemon[$i][2] . '" alt="Image du pokemon"/></p>
                 <p><label>Taille</label> : <input type="number" name="taille_pokemon" step="any" required/> ' . $arrayPokemon[$i]["Taille"] . ' (m)</p>
                 <p><label>Taille</label> : <input type="number" name="poids_pokemon" step="any" required/> ' . $arrayPokemon[$i]["Poids"] . ' (kg)</p>
+                    
+                <p><label>PV</label> : <input type="number" name="pv_pokemon" step="any" required/> ' . $arrayStats[$i]["PV"] . '</p>
+                <p><label>Vitesse</label> : <input type="number" name="vitesse_pokemon" step="any" required/> ' . $arrayStats[$i]["Vitesse"] . '</p>
+                <p><label>Attaque</label> : <input type="number" name="Attaque_pokemon" step="any" required/> ' . $arrayStats[$i]["Attaque"] . '</p>
+                <p><label>Défense</label> : <input type="number" name="Defense_pokemon" step="any" required/> ' . $arrayStats[$i]["Defense"] . '</p>    
+                <p><label>Attaque Spécial</label> : <input type="number" name="AttaqueSpe_pokemon" step="any" required/> ' . $arrayStats[$i]["2"] . '</p>
+                <p><label>Défense Spécial</label> : <input type="number" name="DefenseSpe_pokemon" step="any" required/> ' . $arrayStats[$i]["3"] . '</p>
+        
                 <p><label for="type">De quel catégorie est le pokemon?</label></p>';
         }
     }
