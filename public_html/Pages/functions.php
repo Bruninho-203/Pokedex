@@ -183,6 +183,7 @@ function affiche_categorie_aside($array, $nomtype) {
 //*************************  Caracteristique pokemon
 //Affiche les informations du pokemon choisi
 function affiche_pokemon($arrayPokemon, $idPokemon) {
+    
     $ligne = count($arrayPokemon);
     for ($i = 0; $i < $ligne; $i++) {
         if ($arrayPokemon[$i]["idPokemon"] == $idPokemon) {
@@ -190,7 +191,10 @@ function affiche_pokemon($arrayPokemon, $idPokemon) {
              <form method="post" action="#">
                 <p><label>Nom</label> : '. $arrayPokemon[$i]["Nom"] . '</p>
                 <p><label>Image</label> : <img class="ImgagePokemon" src="' . $arrayPokemon[$i][2] . '" alt="Image de la categorie"/></p>
-                <p><label>Type</label> : '. $arrayPokemon[$i]["NomType"] . '<img class="ImgagePokemon" src="' . $arrayPokemon[$i]["cheminImage"] . '" alt="Image de la categorie"/></p>';
+                <p><label>Type</label> : '. $arrayPokemon[$i]["NomType"] . '<img class="ImgagePokemon" src="' . $arrayPokemon[$i]["cheminImage"] . '" alt="Image de la categorie"/></p>
+                <p><label>Taille</label> : '. $arrayPokemon[$i]["Taille"] . ' (m)</p>
+                <p><label>Taille</label> : '. $arrayPokemon[$i]["Poids"] . ' (kg)</p>
+                <a href="ModifierPokemon.php?id=' . $arrayPokemon[$i]["idPokemon"] . '">Modifier les informations</a>';
         }
     }
 }
@@ -216,16 +220,17 @@ function donne_idType_avec_nomType($bdd, $nomType) {
 
 //Affiche les informations du pokemon choisi pour une modification
 function affiche_pokemon_modification($arrayPokemon, $idPokemon) {
-    debug($arrayPokemon);
+    //debug($arrayPokemon);
     $ligne = count($arrayPokemon);
     for ($i = 0; $i < $ligne; $i++) {
         if ($arrayPokemon[$i]["idPokemon"] == $idPokemon) {
             echo '<article>
              <form method="post" action="#">
                  <p>Modifier les informations de votre pokemon</p>
-                <p><label>Nom</label> : <input type="text" name="nom_pokemon" placeholder="' . $arrayPokemon[$i]["Nom"] . '" required/></p>
-                <p><label>Image</label> : <input type="file" name="image_pokemon"/><img class="ImgagePokemon" src="' . $arrayPokemon[$i]["cheminImage"] . '" alt="Image du pokemon"/></p>
-
+                <p><label>Nom</label> : <input type="text" name="nom_pokemon" placeholder="Entrez le nouveau nom" required/>' . $arrayPokemon[$i]["Nom"] . '</p>
+                <p><label>Image</label> : <input type="file" name="image_pokemon"/><img class="ImgagePokemon" src="' . $arrayPokemon[$i][2] . '" alt="Image du pokemon"/></p>
+                <p><label>Taille</label> : <input type="number" name="taille_pokemon" step="any" required/> ' . $arrayPokemon[$i]["Taille"] . ' (m)</p>
+                <p><label>Taille</label> : <input type="number" name="poids_pokemon" step="any" required/> ' . $arrayPokemon[$i]["Poids"] . ' (kg)</p>
                 <p><label for="type">De quel catégorie est le pokemon?</label></p>';
         }
     }
