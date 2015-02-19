@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: 127.0.0.1
--- Généré le: Jeu 19 Février 2015 à 10:48
+-- Généré le: Jeu 19 Février 2015 à 11:26
 -- Version du serveur: 5.6.11-log
 -- Version de PHP: 5.4.14
 
@@ -39,6 +39,8 @@ CREATE TABLE IF NOT EXISTS `appartenir` (
 
 INSERT INTO `appartenir` (`idPokemon`, `idType`) VALUES
 (7, 1),
+(28, 1),
+(29, 1),
 (1, 2),
 (5, 2),
 (9, 2),
@@ -49,10 +51,19 @@ INSERT INTO `appartenir` (`idPokemon`, `idType`) VALUES
 (19, 4),
 (20, 4),
 (4, 5),
+(24, 5),
+(25, 5),
 (10, 6),
+(33, 6),
+(34, 6),
 (6, 7),
+(26, 7),
+(27, 7),
 (8, 8),
 (21, 8),
+(30, 8),
+(31, 8),
+(32, 8),
 (16, 9),
 (17, 9),
 (18, 9);
@@ -92,7 +103,23 @@ INSERT INTO `caracteristique` (`PV`, `Attaque`, `Defense`, `Attaque special`, `D
 (61, 84, 65, 70, 70, 70, 10),
 (95, 65, 110, 60, 130, 65, 16),
 (75, 90, 50, 110, 80, 95, 17),
-(65, 130, 60, 75, 60, 75, 18);
+(65, 130, 60, 75, 60, 75, 18),
+(60, 62, 63, 80, 80, 60, 19),
+(80, 82, 83, 100, 100, 80, 20),
+(106, 110, 90, 154, 90, 130, 21),
+(59, 63, 80, 65, 80, 58, 22),
+(79, 83, 100, 85, 105, 78, 23),
+(20, 40, 15, 35, 35, 60, 24),
+(60, 90, 55, 90, 80, 100, 25),
+(40, 80, 35, 35, 45, 70, 26),
+(65, 105, 60, 60, 70, 95, 27),
+(40, 45, 35, 40, 40, 90, 28),
+(65, 70, 60, 65, 65, 115, 29),
+(25, 20, 15, 105, 55, 90, 30),
+(40, 35, 30, 120, 70, 105, 31),
+(55, 50, 45, 135, 85, 120, 32),
+(41, 64, 45, 50, 50, 50, 33),
+(91, 134, 95, 100, 100, 80, 34);
 
 -- --------------------------------------------------------
 
@@ -107,7 +134,7 @@ CREATE TABLE IF NOT EXISTS `pokemon` (
   `Taille` double NOT NULL,
   `Poids` double NOT NULL,
   PRIMARY KEY (`idPokemon`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=35 ;
 
 --
 -- Contenu de la table `pokemon`
@@ -131,7 +158,18 @@ INSERT INTO `pokemon` (`idPokemon`, `Nom`, `cheminImage`, `Taille`, `Poids`) VAL
 (20, 'Florizarre', 'img/pokemon/Florizarre.png', 2, 100),
 (21, 'Mewtwo', 'img/pokemon/Mewtwo.png', 2, 122),
 (22, 'Carabaffe', 'img/pokemon/Carabaffe.png', 1, 22.5),
-(23, 'Tortank', 'img/pokemon/Tortank.png', 1.6, 85.5);
+(23, 'Tortank', 'img/pokemon/Tortank.png', 1.6, 85.5),
+(24, 'Pichu', 'img/pokemon/Pichu.png', 0.3, 2),
+(25, 'Raichu', 'img/pokemon/Raichu.png', 0.8, 30),
+(26, 'Ferosinge', 'img/pokemon/Ferosinge.png', 0.5, 28),
+(27, 'Colossinge', 'img/pokemon/Colossinge.png', 1, 32),
+(28, 'Miaouss', 'img/pokemon/Miaouss.png', 0.4, 4.2),
+(29, 'Persian', 'img/pokemon/Persian.png', 1, 32),
+(30, 'Abra', 'img/pokemon/Abra.png', 0.9, 19.5),
+(31, 'Kadabra', 'img/pokemon/Kadabra.png', 1.3, 56.5),
+(32, 'Alakazam', 'img/pokemon/Alakazam.png', 1.3, 56.5),
+(33, 'Minidraco', 'img/pokemon/Minidraco.png', 1.8, 3.3),
+(34, 'Dracolosse', 'img/pokemon/Dracolosse.png', 2.2, 210);
 
 -- --------------------------------------------------------
 
