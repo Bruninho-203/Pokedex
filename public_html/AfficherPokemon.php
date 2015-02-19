@@ -94,22 +94,9 @@ if (isset($_REQUEST['message'])) {
                             Caracteristique du pokemon
                         </h1>
                         <?php 
-                            affiche_pokemon(recupere_pokemon($bdd), $_REQUEST['id']);
-                            affiche_categorie_option(recupere_categorie($bdd), $bdd, $_REQUEST['id'] );
-                            
-                            
-                            if (isset($_REQUEST['modifier'])) 
-                            {
-                                $idPokemon = $_REQUEST['idPokemonCachee'];
-                                $nom = $_REQUEST['nom_pokemon'];
-                                $cheminImage = 'img/pokemon/'.$_REQUEST['image_pokemon'];
-                                $type = donne_idType_avec_nomType($bdd, $_REQUEST['type']);
-
-                                modifie_pokemon($idPokemon, $nom, $cheminImage, $type[0][0], $bdd);
-                            }
+                            affiche_pokemon(recupere_pokemon($bdd), $_REQUEST['id']);                       
                         ?>
-                        
-                        
+                
                     </section>
                     <section class="col-sm-2">
                         <aside class="row-md-12">

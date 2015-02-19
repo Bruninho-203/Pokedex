@@ -161,7 +161,7 @@ function affiche_categorie_liste($array) {
     echo '<article><ul>';
 
     for ($y = 0; $y < $ligne; $y++) {
-        echo '<li><a href="../../ModifierPokemon.php?id=' . $array[$y][2] . '">' . $array[$y]['Nom'] . ' <img class="ImgagePokemon" src="../../' . $array[$y]["cheminImage"] . '"alt="Pokemon"/></a></li>';
+        echo '<li><a href="../../AfficherPokemon.php?id=' . $array[$y][2] . '">' . $array[$y]['Nom'] . ' <img class="ImgagePokemon" src="../../' . $array[$y]["cheminImage"] . '"alt="Pokemon"/></a></li>';
     }
     echo '</ul></article>';
 }
@@ -189,8 +189,8 @@ function affiche_pokemon($arrayPokemon, $idPokemon) {
             echo '<article>
              <form method="post" action="#">
                 <p><label>Nom</label> : '. $arrayPokemon[$i]["Nom"] . '</p>
-                <p><label>Image</label> : <img class="ImgagePokemon" src="' . $arrayPokemon[$i]["cheminImage"] . '" alt="Image du pokemon"/></p>
-                <p><label>Type</label> : </p>';
+                <p><label>Image</label> : <img class="ImgagePokemon" src="' . $arrayPokemon[$i][2] . '" alt="Image de la categorie"/></p>
+                <p><label>Type</label> : '. $arrayPokemon[$i]["NomType"] . '<img class="ImgagePokemon" src="' . $arrayPokemon[$i]["cheminImage"] . '" alt="Image de la categorie"/></p>';
         }
     }
 }
@@ -216,6 +216,7 @@ function donne_idType_avec_nomType($bdd, $nomType) {
 
 //Affiche les informations du pokemon choisi pour une modification
 function affiche_pokemon_modification($arrayPokemon, $idPokemon) {
+    debug($arrayPokemon);
     $ligne = count($arrayPokemon);
     for ($i = 0; $i < $ligne; $i++) {
         if ($arrayPokemon[$i]["idPokemon"] == $idPokemon) {
