@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.4
+-- version 3.5.8.1
 -- http://www.phpmyadmin.net
 --
--- Client :  127.0.0.1
--- Généré le :  Jeu 19 Février 2015 à 10:15
--- Version du serveur :  5.6.15-log
--- Version de PHP :  5.4.24
+-- Client: 127.0.0.1
+-- Généré le: Jeu 19 Février 2015 à 10:48
+-- Version du serveur: 5.6.11-log
+-- Version de PHP: 5.4.14
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de données :  `pokedex`
+-- Base de données: `pokedex`
 --
 
 -- --------------------------------------------------------
@@ -43,11 +43,16 @@ INSERT INTO `appartenir` (`idPokemon`, `idType`) VALUES
 (5, 2),
 (9, 2),
 (2, 3),
+(22, 3),
+(23, 3),
 (3, 4),
+(19, 4),
+(20, 4),
 (4, 5),
 (10, 6),
 (6, 7),
 (8, 8),
+(21, 8),
 (16, 9),
 (17, 9),
 (18, 9);
@@ -70,6 +75,25 @@ CREATE TABLE IF NOT EXISTS `caracteristique` (
   KEY `idPokemon` (`idPokemon`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Contenu de la table `caracteristique`
+--
+
+INSERT INTO `caracteristique` (`PV`, `Attaque`, `Defense`, `Attaque special`, `Defense special`, `Vitesse`, `idPokemon`) VALUES
+(39, 52, 43, 60, 50, 65, 1),
+(44, 48, 65, 50, 64, 43, 2),
+(45, 49, 49, 65, 65, 45, 3),
+(35, 55, 30, 50, 40, 90, 4),
+(78, 84, 78, 109, 85, 100, 5),
+(50, 120, 53, 35, 110, 87, 6),
+(160, 110, 65, 65, 110, 30, 7),
+(100, 100, 100, 100, 100, 100, 8),
+(58, 64, 58, 80, 65, 80, 9),
+(61, 84, 65, 70, 70, 70, 10),
+(95, 65, 110, 60, 130, 65, 16),
+(75, 90, 50, 110, 80, 95, 17),
+(65, 130, 60, 75, 60, 75, 18);
+
 -- --------------------------------------------------------
 
 --
@@ -83,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `pokemon` (
   `Taille` double NOT NULL,
   `Poids` double NOT NULL,
   PRIMARY KEY (`idPokemon`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
 
 --
 -- Contenu de la table `pokemon`
@@ -102,7 +126,12 @@ INSERT INTO `pokemon` (`idPokemon`, `Nom`, `cheminImage`, `Taille`, `Poids`) VAL
 (10, 'Draco', 'img/pokemon/Draco.png', 4, 16.5),
 (16, 'Noctali', 'img/pokemon/Noctali.png', 1, 27),
 (17, 'Demolosse', 'img/pokemon/Demolosse.png', 1.4, 35),
-(18, 'Absol', 'img/pokemon/Absol.png', 1.2, 47);
+(18, 'Absol', 'img/pokemon/Absol.png', 1.2, 47),
+(19, 'Herbizarre', 'img/pokemon/Herbizarre.png', 1, 13),
+(20, 'Florizarre', 'img/pokemon/Florizarre.png', 2, 100),
+(21, 'Mewtwo', 'img/pokemon/Mewtwo.png', 2, 122),
+(22, 'Carabaffe', 'img/pokemon/Carabaffe.png', 1, 22.5),
+(23, 'Tortank', 'img/pokemon/Tortank.png', 1.6, 85.5);
 
 -- --------------------------------------------------------
 
