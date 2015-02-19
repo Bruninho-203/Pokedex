@@ -1,33 +1,31 @@
-<?php
-session_start();
-
-include 'pages/functions.php';
-include 'pages/connection/connexionbd.php';
-
-$s_login = "Login";
-$s_url = "login.php";
-$pseudo = '';
-$bdd = connectBD();
-$chemin = 0;
-$affiche_lien = affiche_lien($chemin);
-$cheminCategorie = './Categorie.php';
-$cheminSupprime = './supprimerPokemon.php'; 
-$cheminCreer = './creerPokemon.php';
-
+<?php 
+    session_start();
+    
+    include '../functions.php';
+    include '../connection/connexionbd.php';
+    
+    $s_login = "Login";
+    $s_url = "login.php";
+    $pseudo = '';
+    $bdd = connectBD();
+    $chemin = 1;
+    $affiche_lien = affiche_lien($chemin);
+    
 if (isset($_SESSION['conn']) && $_SESSION['conn']) {
     $s_login = "Deconnecter";
     $s_url = "disconnect.php";
     $pseudo = 'Vous êtes le maitre Pokemon: ' . $_SESSION['pseudo'];
 }
-if (isset($_REQUEST['message'])) {
-    echo $_REQUEST['message'];
-}
+    if(isset($_REQUEST['message']))
+    {
+        echo $_REQUEST['message'];
+    }
 ?>
-
+<!DOCTYPE html>
 <html lang="fr">
     <head>
         <meta charset="utf-8">
-        <title>Pokedex</title>
+        <title>Pokedex - <?php echo $NomCategorie;?></title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="">
         <meta name="author" content="Bruno Santos & Jordan Dacuna">
@@ -37,8 +35,8 @@ if (isset($_REQUEST['message'])) {
         <!--script src="js/less-1.3.3.min.js"></script-->
         <!--append ‘#!watch’ to the browser URL, then refresh the page. -->
 
-        <link href="./bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link href="./css3/style.css" rel="stylesheet">
+        <link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css3/style.css" rel="stylesheet">
 
         <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
@@ -52,21 +50,8 @@ if (isset($_REQUEST['message'])) {
         <link rel="apple-touch-icon-precomposed" href="img/apple-touch-icon-57-precomposed.png">
         <link rel="shortcut icon" href="img/favicon.png">
 
-        <script type="text/javascript" src="./bootstrap/js/jquery-1.11.1.min.js"></script>
-        <script type="text/javascript" src="./bootstrap/js/bootstrap.min.js"></script>
-        <script type="text/javascript">//Script qui permet d'afficher des infos-bulles pour savoir le nom des différents types
-            $(document).ready(function(){
-                $('[data-toggle="tooltip"]').tooltip({
-                    placement : 'top'
-                });
-            });
-        </script>
-        <style>
-            .top-buffer {
-                margin: 6em;
-            }
-            
-        </style>
+        <script type="text/javascript" src="../../bootstrap/js/jquery-1.11.1.min.js"></script>
+        <script type="text/javascript" src="../../bootstrap/js/bootstrap.min.js"></script>
     </head>
 
     <body class="container">
@@ -83,13 +68,13 @@ if (isset($_REQUEST['message'])) {
                                     <span class="icon-bar"></span>
                                     <span class="icon-bar"></span>
                                 </button>
-                                <a class="navbar-brand" href="index.php">Pokedex</a>
+                                <a class="navbar-brand" href="../../index.php">Pokedex</a>
                             </div>
                             <div id="navbar" class="navbar-collapse collapse">
                                 <?php 
                                     if (isset($_SESSION['rang'])) 
                                     {
-                                        echo autorisation_CRUD_pokemon($_SESSION['rang'], $chemin, $bdd);
+                                        echo autorisation_CRUD_pokemon($_SESSION['rang'],$chemin, $bdd);
                                     }
                                 ?>
                             <ul class="nav navbar-nav navbar-right">
@@ -102,10 +87,10 @@ if (isset($_REQUEST['message'])) {
                 <div class="top-buffer col-sm-12">
                     <section class="jumbotron col-sm-10">
                         <header>
-                            <h1 style="text-align: center">Catégorie</h1>
+                            <h1 style="text-align: center"><?php echo $NomCategorie;?></h1>
                         </header>
-                        <article class="contener-type">
-                            <?php affiche_categorie(recupere_categorie($bdd)); ?>
+                        <article>
+                            <?php affiche_categorie_Liste(recupere_categorie_liste($bdd, $IdCategorieListe)); ?>
                         </article>
                     </section>
 
@@ -113,6 +98,7 @@ if (isset($_REQUEST['message'])) {
                         <aside class="row-md-12">
                             <article>
                                 <p>Welcome!</p>
+                                <p><?php affiche_categorie_aside(recupere_categorie($bdd), $NomCategorie) ?></p>
                             </article>
                             <fieldset>
                                 <p><?php echo $pseudo; ?></p>                     
@@ -120,10 +106,6 @@ if (isset($_REQUEST['message'])) {
                         </aside>   
                     </section>
                 </div>
-
-                <footer>
-                    <p><a href="mailto:santos.bruno1203@gmail.com">Bruno Santos - </a><a href="mailto:jordan.dacuna.rodriguez@gmail.com">Jordan Dacuña Rodriguez</a> - CFPT</p>
-                </footer>
             </article>
         </section>
     </body>

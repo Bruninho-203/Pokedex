@@ -156,11 +156,11 @@ function recupere_categorie_liste($bdd, $idType) {
 function affiche_categorie_liste($array) {
 //debug($array);
 
-    $i = $ligne = count($array);
+    $ligne = count($array);
 //debug($i);
     echo '<article><ul>';
 
-    for ($y = 0; $y < $i; $y++) {
+    for ($y = 0; $y < $ligne; $y++) {
         echo '<li><a href="../../ModifierPokemon.php?id=' . $array[$y][2] . '">' . $array[$y]['Nom'] . ' <img class="ImgagePokemon" src="../../' . $array[$y]["cheminImage"] . '"alt="Pokemon"/></a></li>';
     }
     echo '</ul></article>';
@@ -180,6 +180,21 @@ function affiche_categorie_aside($array, $nomtype) {
         }
     }
 }
+//*************************  Caracteristique pokemon
+//Affiche les informations du pokemon choisi
+function affiche_pokemon($arrayPokemon, $idPokemon) {
+    $ligne = count($arrayPokemon);
+    for ($i = 0; $i < $ligne; $i++) {
+        if ($arrayPokemon[$i]["idPokemon"] == $idPokemon) {
+            echo '<article>
+             <form method="post" action="#">
+                <p><label>Nom</label> : '. $arrayPokemon[$i]["Nom"] . '</p>
+                <p><label>Image</label> : <img class="ImgagePokemon" src="' . $arrayPokemon[$i]["cheminImage"] . '" alt="Image du pokemon"/></p>
+                <p><label>Type</label> : </p>';
+        }
+    }
+}
+
 
 //*************************  Modification
 function recupere_pokemon_modification($bdd, $idPokemon) {
@@ -200,7 +215,7 @@ function donne_idType_avec_nomType($bdd, $nomType) {
 }
 
 //Affiche les informations du pokemon choisi pour une modification
-function affiche_pokemon($arrayPokemon, $idPokemon) {
+function affiche_pokemon_modification($arrayPokemon, $idPokemon) {
     $ligne = count($arrayPokemon);
     for ($i = 0; $i < $ligne; $i++) {
         if ($arrayPokemon[$i]["idPokemon"] == $idPokemon) {
@@ -277,7 +292,6 @@ function supprimerPokemon($idPokemon, $bdd) {
 }
 
 /* * ********** Liste déroulante menu  */
-
 function affiche_categorie_liste_deroulante($array, $TestChemin) {
 //debug($array);
     $affichage = "";
@@ -375,7 +389,7 @@ function autorisation_CRUD_pokemon($rang, $chemin, $bdd) {
         if ($rang == 1) {
             if ($chemin == 0) {
                 $liens = '<ul class="nav navbar-nav">
-                                <li class="active">
+                                <li class="">
                                     <a href="Categorie.php">Catégorie</a>
                                 </li>                   
                                 <li class="dropdown">
@@ -387,7 +401,7 @@ function autorisation_CRUD_pokemon($rang, $chemin, $bdd) {
                             </ul>';
             } elseif ($chemin == 1) {
                 $liens = '<ul class="nav navbar-nav">
-                                <li class="active">
+                                <li class="">
                                     <a href="../../Categorie.php">Catégorie</a>
                                 </li>                   
                                 <li class="dropdown">
@@ -399,7 +413,7 @@ function autorisation_CRUD_pokemon($rang, $chemin, $bdd) {
                             </ul>';
             } else {
                 $liens = '<ul class="nav navbar-nav">
-                                <li class="active">
+                                <li class="">
                                     <a href="../../Categorie.php">Catégorie</a>
                                 </li>                   
                                 <li class="dropdown">
@@ -414,7 +428,7 @@ function autorisation_CRUD_pokemon($rang, $chemin, $bdd) {
 
             if ($chemin == 0) {
                 $liens = '<ul class="nav navbar-nav">
-                        <li class="active">
+                        <li class="">
                             <a href="Categorie.php">Catégorie</a>
                         </li>
                         <li>
@@ -432,7 +446,7 @@ function autorisation_CRUD_pokemon($rang, $chemin, $bdd) {
                     </ul>';
             } elseif ($chemin == 1) {
                 $liens = '<ul class="nav navbar-nav">
-                        <li class="active">
+                        <li class="">
                             <a href="../../Categorie.php">Catégorie</a>
                         </li>
                         <li>
@@ -450,7 +464,7 @@ function autorisation_CRUD_pokemon($rang, $chemin, $bdd) {
                     </ul>';
             } else {
                 $liens = '<ul class="nav navbar-nav">
-                        <li class="active">
+                        <li class="">
                             <a href="../../Categorie.php">Catégorie</a>
                         </li>
                         <li>

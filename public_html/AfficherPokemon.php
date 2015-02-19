@@ -19,15 +19,17 @@ if (isset($_SESSION['conn']) && $_SESSION['conn']) {
     $s_url = "disconnect.php";
     $pseudo = 'Vous êtes le maitre Pokemon: ' . $_SESSION['pseudo'];
 }
+
+
 if (isset($_REQUEST['message'])) {
     echo $_REQUEST['message'];
 }
 ?>
-
+<!DOCTYPE html>
 <html lang="fr">
     <head>
         <meta charset="utf-8">
-        <title>Pokedex</title>
+        <title>Pokemon - Modif</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="">
         <meta name="author" content="Bruno Santos & Jordan Dacuna">
@@ -54,22 +56,9 @@ if (isset($_REQUEST['message'])) {
 
         <script type="text/javascript" src="./bootstrap/js/jquery-1.11.1.min.js"></script>
         <script type="text/javascript" src="./bootstrap/js/bootstrap.min.js"></script>
-        <script type="text/javascript">//Script qui permet d'afficher des infos-bulles pour savoir le nom des différents types
-            $(document).ready(function(){
-                $('[data-toggle="tooltip"]').tooltip({
-                    placement : 'top'
-                });
-            });
-        </script>
-        <style>
-            .top-buffer {
-                margin: 6em;
-            }
-            
-        </style>
     </head>
 
-    <body class="container">
+   <body class="container">
         <section class="row clearfix">
             <article class="col-md-12 column">
                 <header>  
@@ -101,14 +90,27 @@ if (isset($_REQUEST['message'])) {
                 </header>
                 <div class="top-buffer col-sm-12">
                     <section class="jumbotron col-sm-10">
-                        <header>
-                            <h1 style="text-align: center">Catégorie</h1>
-                        </header>
-                        <article class="contener-type">
-                            <?php affiche_categorie(recupere_categorie($bdd)); ?>
-                        </article>
-                    </section>
+                        <h1>
+                            Caracteristique du pokemon
+                        </h1>
+                        <?php 
+                            affiche_pokemon(recupere_pokemon($bdd), $_REQUEST['id']);
+                            affiche_categorie_option(recupere_categorie($bdd), $bdd, $_REQUEST['id'] );
+                            
+                            
+                            if (isset($_REQUEST['modifier'])) 
+                            {
+                                $idPokemon = $_REQUEST['idPokemonCachee'];
+                                $nom = $_REQUEST['nom_pokemon'];
+                                $cheminImage = 'img/pokemon/'.$_REQUEST['image_pokemon'];
+                                $type = donne_idType_avec_nomType($bdd, $_REQUEST['type']);
 
+                                modifie_pokemon($idPokemon, $nom, $cheminImage, $type[0][0], $bdd);
+                            }
+                        ?>
+                        
+                        
+                    </section>
                     <section class="col-sm-2">
                         <aside class="row-md-12">
                             <article>
@@ -120,10 +122,6 @@ if (isset($_REQUEST['message'])) {
                         </aside>   
                     </section>
                 </div>
-
-                <footer>
-                    <p><a href="mailto:santos.bruno1203@gmail.com">Bruno Santos - </a><a href="mailto:jordan.dacuna.rodriguez@gmail.com">Jordan Dacuña Rodriguez</a> - CFPT</p>
-                </footer>
             </article>
         </section>
     </body>
