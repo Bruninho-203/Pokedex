@@ -259,7 +259,7 @@ function modifie_pokemon($idPokemon, $nom, $cheminImage, $type, $bdd) {
 
 //Récupere les informations des pokemons dans une liste : (id, nom, Chemin)
 function recupere_pokemon($bdd) {
-    $request = $bdd->query("SELECT idPokemon, Nom, cheminImage FROM pokemon order by idPokemon");
+    $request = $bdd->query("SELECT * FROM pokemon as p NATURAL JOIN appartenir as a join type as t on a.idType = t.idType order by t.idType");
     return $request->fetchAll();
 }
 

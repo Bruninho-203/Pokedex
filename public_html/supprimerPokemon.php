@@ -104,7 +104,8 @@ if (isset($_REQUEST['supprimerPokemon'])){
                         . '<li>' . $affiche_pokemon[$i]["Nom"]
                         . '<label>'
                         . '<form method="post" action="#">'
-                        . '<input type="submit" name="supprimerPokemon" value="X">'
+                        . '<label>Type: ' .$affiche_pokemon[$i]["NomType"]. '</label>'         
+                        . '<input type="submit" id ="supprimerPokemon" name="supprimerPokemon" value="X">'
                         . '<input type="hidden" name="idPokemonCachee" value=' . $affiche_pokemon[$i]["idPokemon"] . '>'
                         . '</form>'
                         . '</label>'
