@@ -214,11 +214,10 @@ function affiche_pokemon($arrayPokemon, $arrayStats, $idPokemon) {
                     <p><label>Defense</label> : ' . $arrayStats[$i]["Defense"] . '</p>
                     <p><label>Attaque Spécial</label> : ' . $arrayStats[$i][2] . '</p>
                     <p><label>Defense Spécial</label> : ' . $arrayStats[$i][3] . '</p>
-                   '
+                   <a href="ModifierPokemon.php?id=' . $arrayStats[$i]["idPokemon"] . '">Modifier les informations</a>'
             . '</article>';
         }
     }
-    echo '<a href="ModifierPokemon.php?id=' . $arrayStats[$i]["idPokemon"] . '">Modifier les informations</a>';
 }
 
 //*************************  Modification
@@ -249,16 +248,16 @@ function affiche_pokemon_modification($arrayPokemon, $arrayStats, $idPokemon) {
              <form method="post" action="#">
                  <p>Modifier les informations de votre pokemon</p>
                 <p><label>Nom</label> : <input type="text" name="nom_pokemon" placeholder="Entrez le nouveau nom" required/>' . $arrayPokemon[$i]["Nom"] . '</p>
-                <p><label>Image</label> : <input type="file" name="image_pokemon"/><img class="ImgagePokemon" src="' . $arrayPokemon[$i][2] . '" alt="Image du pokemon"/></p>
+                <p><label>Image</label> : <input type="file" name="img_pokemon"/><img class="ImgagePokemon" src="' . $arrayPokemon[$i][2] . '" alt="Image du pokemon"/></p>
                 <p><label>Taille</label> : <input type="number" name="taille_pokemon" placeholder="' . $arrayPokemon[$i]["Taille"] . ' (m)" step="any" required/> </p>
                 <p><label>Poids</label> : <input type="number" name="poids_pokemon" placeholder="' . $arrayPokemon[$i]["Poids"] . ' (kg)" step="any" required/> </p>
                     
                 <p><label>PV</label> : <input type="number" name="pv_pokemon" placeholder="' . $arrayStats[$i]["PV"] . '" step="any" required/> </p>
                 <p><label>Vitesse</label> : <input type="number" name="vitesse_pokemon" placeholder="' . $arrayStats[$i]["Vitesse"] . '" step="any" required/> </p>
-                <p><label>Attaque</label> : <input type="number" name="Attaque_pokemon" placeholder="' . $arrayStats[$i]["Attaque"] . '" step="any" required/> </p>
-                <p><label>Défense</label> : <input type="number" name="Defense_pokemon" placeholder="' . $arrayStats[$i]["Defense"] . '" step="any" required/> </p>    
-                <p><label>Attaque Spécial</label> : <input type="number" name="AttaqueSpe_pokemon"= placeholder="' . $arrayStats[$i]["2"] . '" step="any" required/> </p>
-                <p><label>Défense Spécial</label> : <input type="number" name="DefenseSpe_pokemon" placeholder="' . $arrayStats[$i]["3"] . '" step="any" required/> </p>
+                <p><label>Attaque</label> : <input type="number" name="attaque_pokemon" placeholder="' . $arrayStats[$i]["Attaque"] . '" step="any" required/> </p>
+                <p><label>Défense</label> : <input type="number" name="defense_pokemon" placeholder="' . $arrayStats[$i]["Defense"] . '" step="any" required/> </p>    
+                <p><label>Attaque Spécial</label> : <input type="number" name="attaqueSpe_pokemon"= placeholder="' . $arrayStats[$i]["2"] . '" step="any" required/> </p>
+                <p><label>Défense Spécial</label> : <input type="number" name="defenseSpe_pokemon" placeholder="' . $arrayStats[$i]["3"] . '" step="any" required/> </p>
         
                 <p><label for="type">De quel catégorie est le pokemon?</label></p>';
         }
@@ -287,22 +286,27 @@ function affiche_categorie_option($array, $bdd, $idPokemon) {
     . '</form></article>';
 }
 
-function modifie_pokemon($idPokemon, $nom, $cheminImage, $type, $bdd) {
-    $request = 'UPDATE pokemon SET idPokemon="' . $idPokemon . '",Nom="' . $nom . '",cheminImage="' . $cheminImage . '" WHERE idPokemon="' . $idPokemon . '" ';
-// Prepare statement
+function modifie_pokemon($listeChamps, $bdd) {
+
+
+    $request = 'UPDATE pokemon SET Nom="' . $listeChamps['nom'] . '",cheminImage="' . $listeChamps['image'] . '",Taille="' . $listeChamps['taille'] . '", Poids="' . $listeChamps['poids'] . '" WHERE idPokemon="' . $listeChamps['idPokemon'] . '" ';
     $statement = $bdd->prepare($request);
-// execute the query
     $statement->execute();
-// echo a message to say the UPDATE succeeded
     echo $statement->rowCount() . " Information records UPDATED successfully || ";
 
-    $request = 'UPDATE appartenir SET idType="' . $type . '" WHERE idPokemon="' . $idPokemon . '"';
-// Prepare statement
+    $request = 'UPDATE appartenir SET idType="' . $listeChamps['type'] . '" WHERE idPokemon="' . $listeChamps['idPokemon'] . '"';
+    $statement = $bdd->prepare($request);
+    $statement->execute();
+    echo $statement->rowCount() . " Type records UPDATED successfully ";
+
+
+    $request = 'UPDATE caracteristique SET PV="' . $listeChamps['pv'] . '", Attaque="' . $listeChamps['attaque'] . '",Defense="' . $listeChamps['defense'] . '"'
+            . ',Vitesse="' . $listeChamps['vitesse'] . '",AttaqueSpe="' . $listeChamps['attaqueSpe'] . '", DefenseSpe="' . $listeChamps['defenseSpe'] . '" WHERE idPokemon="' . $listeChamps['idPokemon'] . '"';
     $statement = $bdd->prepare($request);
 // execute the query
     $statement->execute();
 // echo a message to say the UPDATE succeeded
-    echo $statement->rowCount() . " Type records UPDATED successfully ";
+    echo $statement->rowCount() . " Informations records UPDATED successfully ";
 }
 
 /* * ******************************** Supprimer */
