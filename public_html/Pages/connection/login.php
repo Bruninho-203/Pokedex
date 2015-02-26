@@ -40,7 +40,8 @@ if ($login) {
     header("Location: ../../index.php");
     $_SESSION["connected"] = TRUE;
     
-}
+}else {
+ $g='Informations incorrectes';}
 ?>
 <!--
 To change this template, choose Tools | Templates
@@ -103,7 +104,9 @@ and open the template in the editor.
                                     }
                                 ?>
                             <ul class="nav navbar-nav navbar-right">
-                                <?php echo $affiche_lien; ?> 
+                                <?php echo $affiche_lien; 
+                                
+                                ?> 
                             </ul>
                             </div>                           
                         </div>
