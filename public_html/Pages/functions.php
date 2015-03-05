@@ -208,12 +208,12 @@ function affiche_pokemon($arrayPokemon, $arrayStats, $idPokemon) {
         if ($arrayStats[$i]["idPokemon"] == $idPokemon) {
 
             echo '
-                    <p><label>PV</label> : ' . $arrayStats[$i]["PV"] . '</p>
-                    <p><label>Vitesse</label> : ' . $arrayStats[$i]["Vitesse"] . '</p>
-                    <p><label>Attaque</label> : ' . $arrayStats[$i]["Attaque"] . '</p>
-                    <p><label>Defense</label> : ' . $arrayStats[$i]["Defense"] . '</p>
-                    <p><label>Attaque Spécial</label> : ' . $arrayStats[$i][2] . '</p>
-                    <p><label>Defense Spécial</label> : ' . $arrayStats[$i][3] . '</p>
+                    <p><label>PV</label> : '. $arrayStats[$i]["PV"] . '
+                    <label>Vitesse</label> : '. $arrayStats[$i]["Vitesse"] . '
+                    <label>Attaque</label> : '. $arrayStats[$i]["Attaque"] . '
+                    <label>Defense</label> : '. $arrayStats[$i]["Defense"] . '
+                    <label>Attaque Spécial</label> : '. $arrayStats[$i][2] . '
+                    <label>Defense Spécial</label> : '. $arrayStats[$i][3] . '</p>
                    <a href="ModifierPokemon.php?id=' . $arrayStats[$i]["idPokemon"] . '">Modifier les informations</a>'
             . '</article>';
         }
