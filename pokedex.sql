@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: 127.0.0.1
--- Généré le: Jeu 19 Février 2015 à 11:26
+-- Généré le: Jeu 05 Mars 2015 à 08:08
 -- Version du serveur: 5.6.11-log
 -- Version de PHP: 5.4.14
 
@@ -65,8 +65,8 @@ INSERT INTO `appartenir` (`idPokemon`, `idType`) VALUES
 (31, 8),
 (32, 8),
 (16, 9),
-(17, 9),
-(18, 9);
+(18, 9),
+(35, 9);
 
 -- --------------------------------------------------------
 
@@ -78,8 +78,8 @@ CREATE TABLE IF NOT EXISTS `caracteristique` (
   `PV` int(3) NOT NULL,
   `Attaque` int(3) NOT NULL,
   `Defense` int(3) NOT NULL,
-  `Attaque special` int(3) NOT NULL,
-  `Defense special` int(3) NOT NULL,
+  `AttaqueSpe` int(3) NOT NULL,
+  `DefenseSpe` int(3) NOT NULL,
   `Vitesse` int(3) NOT NULL,
   `idPokemon` int(10) NOT NULL,
   PRIMARY KEY (`idPokemon`),
@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `caracteristique` (
 -- Contenu de la table `caracteristique`
 --
 
-INSERT INTO `caracteristique` (`PV`, `Attaque`, `Defense`, `Attaque special`, `Defense special`, `Vitesse`, `idPokemon`) VALUES
+INSERT INTO `caracteristique` (`PV`, `Attaque`, `Defense`, `AttaqueSpe`, `DefenseSpe`, `Vitesse`, `idPokemon`) VALUES
 (39, 52, 43, 60, 50, 65, 1),
 (44, 48, 65, 50, 64, 43, 2),
 (45, 49, 49, 65, 65, 45, 3),
@@ -102,7 +102,6 @@ INSERT INTO `caracteristique` (`PV`, `Attaque`, `Defense`, `Attaque special`, `D
 (58, 64, 58, 80, 65, 80, 9),
 (61, 84, 65, 70, 70, 70, 10),
 (95, 65, 110, 60, 130, 65, 16),
-(75, 90, 50, 110, 80, 95, 17),
 (65, 130, 60, 75, 60, 75, 18),
 (60, 62, 63, 80, 80, 60, 19),
 (80, 82, 83, 100, 100, 80, 20),
@@ -134,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `pokemon` (
   `Taille` double NOT NULL,
   `Poids` double NOT NULL,
   PRIMARY KEY (`idPokemon`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=35 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=36 ;
 
 --
 -- Contenu de la table `pokemon`
@@ -152,7 +151,6 @@ INSERT INTO `pokemon` (`idPokemon`, `Nom`, `cheminImage`, `Taille`, `Poids`) VAL
 (9, 'Reptincel', 'img/pokemon/Reptincel.png', 1.1, 19),
 (10, 'Draco', 'img/pokemon/Draco.png', 4, 16.5),
 (16, 'Noctali', 'img/pokemon/Noctali.png', 1, 27),
-(17, 'Demolosse', 'img/pokemon/Demolosse.png', 1.4, 35),
 (18, 'Absol', 'img/pokemon/Absol.png', 1.2, 47),
 (19, 'Herbizarre', 'img/pokemon/Herbizarre.png', 1, 13),
 (20, 'Florizarre', 'img/pokemon/Florizarre.png', 2, 100),
@@ -169,7 +167,8 @@ INSERT INTO `pokemon` (`idPokemon`, `Nom`, `cheminImage`, `Taille`, `Poids`) VAL
 (31, 'Kadabra', 'img/pokemon/Kadabra.png', 1.3, 56.5),
 (32, 'Alakazam', 'img/pokemon/Alakazam.png', 1.3, 56.5),
 (33, 'Minidraco', 'img/pokemon/Minidraco.png', 1.8, 3.3),
-(34, 'Dracolosse', 'img/pokemon/Dracolosse.png', 2.2, 210);
+(34, 'Dracolosse', 'img/pokemon/Dracolosse.png', 2.2, 210),
+(35, 'zzzz', 'img/pokemon/Admin54eecf7fb9e40.jpg', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -253,7 +252,7 @@ INSERT INTO `utilisateurs` (`idUtilisateur`, `Nom`, `Prenom`, `Pseudo`, `Mdp`, `
 -- Contraintes pour la table `appartenir`
 --
 ALTER TABLE `appartenir`
-  ADD CONSTRAINT `FK_APPARTENIR_idPokemon` FOREIGN KEY (`idPokemon`) REFERENCES `pokemon` (`idPokemon`),
+  ADD CONSTRAINT `appartenir_ibfk_1` FOREIGN KEY (`idPokemon`) REFERENCES `pokemon` (`idPokemon`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_APPARTENIR_idType` FOREIGN KEY (`idType`) REFERENCES `type` (`idType`);
 
 --
