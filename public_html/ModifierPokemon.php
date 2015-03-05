@@ -24,6 +24,10 @@ if (isset($_SESSION['conn']) && $_SESSION['conn']) {
 if (isset($_REQUEST['message'])) {
     echo $_REQUEST['message'];
 }
+
+if (isset($_REQUEST['envoiRecherche'])) {
+    search_pokemon_nom($_REQUEST['recherche'], $bdd);
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -80,6 +84,10 @@ if (isset($_REQUEST['message'])) {
                                     echo autorisation_CRUD_pokemon($_SESSION['rang'], $chemin, $bdd);
                                 }
                                 ?>
+                                                                <form action="#" method="get">
+                                    <input type="search" name="recherche"/> 
+                                    <input type="submit" name="envoiRecherche" value="Recherche"/>
+                                </form>
                                 <ul class="nav navbar-nav navbar-right">
                                     <?php echo $affiche_lien; ?> 
                                 </ul>

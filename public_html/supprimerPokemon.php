@@ -23,8 +23,12 @@ if (isset($_REQUEST['message'])) {
     echo $_REQUEST['message'];
 }
 
-if (isset($_REQUEST['supprimerPokemon'])){
+if (isset($_REQUEST['supprimerPokemon'])) {
     header("Location: ./supprimerPokemon.php");
+}
+
+if (isset($_REQUEST['envoiRecherche'])) {
+    search_pokemon_nom($_REQUEST['recherche'], $bdd);
 }
 ?>
 <!DOCTYPE html>
@@ -82,6 +86,10 @@ if (isset($_REQUEST['supprimerPokemon'])){
                                     echo autorisation_CRUD_pokemon($_SESSION['rang'], $chemin, $bdd);
                                 }
                                 ?>
+                                <form action="#" method="get">
+                                    <input type="search" name="recherche"/> 
+                                    <input type="submit" name="envoiRecherche" value="Recherche"/>
+                                </form>
                                 <ul class="nav navbar-nav navbar-right">
                                     <?php echo $affiche_lien; ?> 
                                 </ul>
@@ -104,7 +112,7 @@ if (isset($_REQUEST['supprimerPokemon'])){
                         . '<li>' . $affiche_pokemon[$i]["Nom"]
                         . '<label>'
                         . '<form method="post" action="#">'
-                        . '<label for ="supprimerPokemon" class ="miseEnFormeSupprimer">Type: ' .$affiche_pokemon[$i]["NomType"]. '</label>'         
+                        . '<label for ="supprimerPokemon" class ="miseEnFormeSupprimer">Type: ' . $affiche_pokemon[$i]["NomType"] . '</label>'
                         . '<input type="submit"  id="supprimerPokemon "name="supprimerPokemon" value="X">'
                         . '<input type="hidden" name="idPokemonCachee" value=' . $affiche_pokemon[$i]["idPokemon"] . '>'
                         . '</form>'
@@ -112,16 +120,14 @@ if (isset($_REQUEST['supprimerPokemon'])){
                         . '</li>'
                         . '</ul>';
                     }
-                    
+
                     if (isset($_REQUEST['supprimerPokemon'])) {
 
                         $idPokemon = $_REQUEST['idPokemonCachee'];
                         $imageName = getPokemonImageName($idPokemon, $bdd);
-                        if(supprimerPokemon($idPokemon, $bdd)) {
-                            unlink($imageName);    
+                        if (supprimerPokemon($idPokemon, $bdd)) {
+                            unlink($imageName);
                         }
-                        
-                        
                     }
                     ?>
                 </section>

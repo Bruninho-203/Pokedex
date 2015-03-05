@@ -11,7 +11,7 @@ $bdd = connectBD();
 $chemin = 0;
 $affiche_lien = affiche_lien($chemin);
 $cheminCategorie = './Categorie.php';
-$cheminSupprime = './supprimerPokemon.php'; 
+$cheminSupprime = './supprimerPokemon.php';
 $cheminCreer = './creerPokemon.php';
 
 if (isset($_SESSION['conn']) && $_SESSION['conn']) {
@@ -21,6 +21,10 @@ if (isset($_SESSION['conn']) && $_SESSION['conn']) {
 }
 if (isset($_REQUEST['message'])) {
     echo $_REQUEST['message'];
+}
+
+if (isset($_REQUEST['envoiRecherche'])) {
+    search_pokemon_nom($_REQUEST['recherche'], $bdd);
 }
 ?>
 
@@ -55,9 +59,9 @@ if (isset($_REQUEST['message'])) {
         <script type="text/javascript" src="./bootstrap/js/jquery-1.11.1.min.js"></script>
         <script type="text/javascript" src="./bootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript">//Script qui permet d'afficher des infos-bulles pour savoir le nom des différents types
-            $(document).ready(function(){
+            $(document).ready(function() {
                 $('[data-toggle="tooltip"]').tooltip({
-                    placement : 'top'
+                    placement: 'top'
                 });
             });
         </script>
@@ -65,7 +69,7 @@ if (isset($_REQUEST['message'])) {
             .top-buffer {
                 margin: 6em;
             }
-            
+
         </style>
     </head>
 
@@ -86,15 +90,18 @@ if (isset($_REQUEST['message'])) {
                                 <a class="navbar-brand" href="index.php">Pokedex</a>
                             </div>
                             <div id="navbar" class="navbar-collapse collapse">
-                                <?php 
-                                    if (isset($_SESSION['rang'])) 
-                                    {
-                                        echo autorisation_CRUD_pokemon($_SESSION['rang'], $chemin, $bdd);
-                                    }
+                                <?php
+                                if (isset($_SESSION['rang'])) {
+                                    echo autorisation_CRUD_pokemon($_SESSION['rang'], $chemin, $bdd);
+                                }
                                 ?>
-                            <ul class="nav navbar-nav navbar-right">
-                                <?php echo $affiche_lien; ?> 
-                            </ul>
+                                <form action="#" method="get">
+                                    <input type="search" name="recherche"/> 
+                                    <input type="submit" name="envoiRecherche" value="Recherche"/>
+                                </form>
+                                <ul class="nav navbar-nav navbar-right">
+                                    <?php echo $affiche_lien; ?> 
+                                </ul>
                             </div>                           
                         </div>
                     </nav>

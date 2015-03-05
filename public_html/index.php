@@ -20,7 +20,9 @@ if (isset($_SESSION['conn']) && $_SESSION['conn']) {
 if (isset($_REQUEST['message'])) {
     echo $_REQUEST['message'];
 }
-
+if (isset($_REQUEST['envoiRecherche'])) {
+    search_pokemon_nom($_REQUEST['recherche'], $bdd);
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -72,15 +74,22 @@ if (isset($_REQUEST['message'])) {
                                 <a class="navbar-brand" href="index.php">Pokedex</a>
                             </div>
                             <div id="navbar" class="navbar-collapse collapse">
-                                <?php 
-                                    if (isset($_SESSION['rang'])) 
-                                    {
-                                        echo autorisation_CRUD_pokemon($_SESSION['rang'],$chemin, $bdd);
-                                    }
+                                <?php
+                                if (isset($_SESSION['rang'])) {
+                                    echo autorisation_CRUD_pokemon($_SESSION['rang'], $chemin, $bdd);
+                                }
                                 ?>
-                            <ul class="nav navbar-nav navbar-right">
-                                <?php echo $affiche_lien; ?> 
-                            </ul>
+
+                                <form action="#" method="get">
+                                    <input type="search" name="recherche"/>
+                                    <input type="submit" name="envoiRecherche" value="Recherche"/>
+                                </form>
+
+                                <ul class="nav navbar-nav navbar-right">
+                                    <?php echo $affiche_lien; ?> 
+                                </ul>
+
+
                             </div>                           
                         </div>
                     </nav>

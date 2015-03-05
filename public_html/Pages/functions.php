@@ -120,8 +120,20 @@ function Statut() {
     }
 
     if (!isset($_SESSION['pseudo'])) {
-        echo 'Bonjour Ã©tranger';
+        echo 'Bonjour étranger';
     }
+}
+
+function search_pokemon_nom($nomPokemon, $bdd){
+    $request = "SELECT idPokemon FROM pokemon where Nom ='".$nomPokemon."'";
+    $query = $bdd->query($request);
+    $query->execute();
+    $result =  $query->fetchAll();
+    for ($i=0;$i<count($result);$i++){
+      header("Location: ./AfficherPokemon.php?id=".$result[$i][0]);
+
+    }
+    
 }
 
 /* * *************************************************************************** Type ******************************************** */

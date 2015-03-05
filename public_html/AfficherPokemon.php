@@ -11,7 +11,7 @@ $bdd = connectBD();
 $chemin = 0;
 $affiche_lien = affiche_lien($chemin);
 $cheminCategorie = './Categorie.php';
-$cheminSupprime = './supprimerPokemon.php'; 
+$cheminSupprime = './supprimerPokemon.php';
 $cheminCreer = './creerPokemon.php';
 
 if (isset($_SESSION['conn']) && $_SESSION['conn']) {
@@ -23,6 +23,10 @@ if (isset($_SESSION['conn']) && $_SESSION['conn']) {
 
 if (isset($_REQUEST['message'])) {
     echo $_REQUEST['message'];
+}
+
+if (isset($_REQUEST['envoiRecherche'])) {
+    search_pokemon_nom($_REQUEST['recherche'], $bdd);
 }
 ?>
 <!DOCTYPE html>
@@ -58,7 +62,7 @@ if (isset($_REQUEST['message'])) {
         <script type="text/javascript" src="./bootstrap/js/bootstrap.min.js"></script>
     </head>
 
-   <body class="container">
+    <body class="container">
         <section class="row clearfix">
             <article class="col-md-12 column">
                 <header>  
@@ -75,15 +79,18 @@ if (isset($_REQUEST['message'])) {
                                 <a class="navbar-brand" href="index.php">Pokedex</a>
                             </div>
                             <div id="navbar" class="navbar-collapse collapse">
-                                <?php 
-                                    if (isset($_SESSION['rang'])) 
-                                    {
-                                        echo autorisation_CRUD_pokemon($_SESSION['rang'], $chemin, $bdd);
-                                    }
+                                <?php
+                                if (isset($_SESSION['rang'])) {
+                                    echo autorisation_CRUD_pokemon($_SESSION['rang'], $chemin, $bdd);
+                                }
                                 ?>
-                            <ul class="nav navbar-nav navbar-right">
-                                <?php echo $affiche_lien; ?> 
-                            </ul>
+                                <form action="#" method="get">
+                                    <input type="search" name="recherche"/> 
+                                    <input type="submit" name="envoiRecherche" value="Recherche"/>
+                                </form>
+                                <ul class="nav navbar-nav navbar-right">
+                                    <?php echo $affiche_lien; ?> 
+                                </ul>
                             </div>                           
                         </div>
                     </nav>
@@ -93,10 +100,10 @@ if (isset($_REQUEST['message'])) {
                         <h1>
                             Caracteristique du pokemon
                         </h1>
-                        <?php 
-                            affiche_pokemon(recupere_pokemon($bdd), recupere_pokemon_caracteristique($bdd), $_REQUEST['id']);                       
+                        <?php
+                        affiche_pokemon(recupere_pokemon($bdd), recupere_pokemon_caracteristique($bdd), $_REQUEST['id']);
                         ?>
-                
+
                     </section>
                     <section class="col-sm-2">
                         <aside class="row-md-12">
