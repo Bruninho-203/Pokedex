@@ -63,6 +63,8 @@ if (isset($_REQUEST["ajoutPokemon"])) {
 
     $bdd = connectBD();
     ajouterPokemon($nom_pokemon, $new_chemin2, $type, $bdd);
+    
+    
 }
 
 if (isset($_REQUEST['envoiRecherche'])) {
@@ -151,7 +153,7 @@ if (isset($_REQUEST['envoiRecherche'])) {
                                 echo'</p>';
                                 ?>
 
-                                <input class="button grow-rotate" type="submit" name="ajoutPokemon" value="Ajouter Pokemon"/>
+                            <p><input class="button grow-rotate" type="submit" name="ajoutPokemon" value="Ajouter Pokemon"/></p>
                         </form>
                     </fieldset>      
                 </section>

@@ -220,13 +220,13 @@ function affiche_pokemon($arrayPokemon, $arrayStats, $idPokemon) {
         if ($arrayStats[$i]["idPokemon"] == $idPokemon) {
 
             echo '
-                    <p><label>PV</label> : '. $arrayStats[$i]["PV"] . '
-                    <label>Vitesse</label> : '. $arrayStats[$i]["Vitesse"] . '
-                    <label>Attaque</label> : '. $arrayStats[$i]["Attaque"] . '
-                    <label>Defense</label> : '. $arrayStats[$i]["Defense"] . '
-                    <label>Attaque Spécial</label> : '. $arrayStats[$i][2] . '
-                    <label>Defense Spécial</label> : '. $arrayStats[$i][3] . '</p>
-                   <a href="ModifierPokemon.php?id=' . $arrayStats[$i]["idPokemon"] . '">Modifier les informations</a>'
+                    <p><label>PV</label> : '. $arrayStats[$i]["PV"] . ' <progress value="'. $arrayStats[$i]["PV"] .'" max="200" ></progress></p>
+                    <p><label>Vitesse</label> : '. $arrayStats[$i]["Vitesse"] . ' <progress value="' . $arrayStats[$i]["Vitesse"] . '" max="200"></progress></p>
+                    <p><label>Attaque</label> : '. $arrayStats[$i]["Attaque"] . ' <progress value="' . $arrayStats[$i]["Attaque"] . '" max="200"></progress></p>
+                    <p><label>Defense</label> : '. $arrayStats[$i]["Defense"] . ' <progress value="' . $arrayStats[$i]["Defense"] . '" max="200"></progress></p>
+                    <p><label>Attaque Spécial</label> : '. $arrayStats[$i][2] . ' <progress value="' . $arrayStats[$i][2] . '" max="200"></progress></p>
+                    <p><label>Defense Spécial</label> : '. $arrayStats[$i][3] . ' <progress value="' . $arrayStats[$i][3] . '" max="200"></progress></p>
+                    <a href="ModifierPokemon.php?id=' . $arrayStats[$i]["idPokemon"] . '">Modifier les informations</a>'
             . '</article>';
         }
     }
@@ -253,6 +253,8 @@ function donne_idType_avec_nomType($bdd, $nomType) {
 //Affiche les informations du pokemon choisi pour une modification
 function affiche_pokemon_modification($arrayPokemon, $arrayStats, $idPokemon) {
     $ligne = count($arrayPokemon);
+    $ligneStat = count($arrayStats);
+    
     for ($i = 0; $i < $ligne; $i++) {
         if ($arrayPokemon[$i]["idPokemon"] == $idPokemon) {
             echo '<article>
@@ -261,19 +263,23 @@ function affiche_pokemon_modification($arrayPokemon, $arrayStats, $idPokemon) {
                 <p><label>Nom</label> : <input type="text" name="nom_pokemon" value="' . $arrayPokemon[$i]["Nom"] . '" required/></p>
                 <p><label>Image</label> : <input type="file" name="img_pokemon"/><img class="ImgagePokemon" src="' . $arrayPokemon[$i][2] . '" alt="Image du pokemon"/></p>
                 <p><label>Taille</label> : <input type="number" name="taille_pokemon" value="' . $arrayPokemon[$i]["Taille"] . '" step="any" required/> (m) </p>
-                <p><label>Poids</label> : <input type="number" name="poids_pokemon" value="' . $arrayPokemon[$i]["Poids"] . '" step="any" required/> (kg) </p>
-                    
-                <p><label>PV</label> : <input type="number" name="pv_pokemon" value="' . $arrayStats[$i]["PV"] . '" step="any" required/> </p>
-                <p><label>Vitesse</label> : <input type="number" name="vitesse_pokemon" value="' . $arrayStats[$i]["Vitesse"] . '" step="any" required/> </p>
-                <p><label>Attaque</label> : <input type="number" name="attaque_pokemon" value="' . $arrayStats[$i]["Attaque"] . '" step="any" required/> </p>
-                <p><label>Défense</label> : <input type="number" name="defense_pokemon" value="' . $arrayStats[$i]["Defense"] . '" step="any" required/> </p>    
-                <p><label>Attaque Spécial</label> : <input type="number" name="attaqueSpe_pokemon"= value="' . $arrayStats[$i]["2"] . '" step="any" required/> </p>
-                <p><label>Défense Spécial</label> : <input type="number" name="defenseSpe_pokemon" value="' . $arrayStats[$i]["3"] . '" step="any" required/> </p>
-        
-                <p><label for="type">De quel catégorie est le pokemon?</label></p>';
+                <p><label>Poids</label> : <input type="number" name="poids_pokemon" value="' . $arrayPokemon[$i]["Poids"] . '" step="any" required/> (kg) </p>';
+        }
+    }
+    for ($y = 0; $y < $ligneStat; $y++) {
+        if ($arrayStats[$y]["idPokemon"] == $idPokemon) {            
+            echo'<p><label>PV</label> : <input type="number" name="pv_pokemon" value="' . $arrayStats[$y]["PV"] . '" step="any" required/>               
+            <p><label>Vitesse</label> : <input type="number" name="vitesse_pokemon" value="' . $arrayStats[$y]["Vitesse"] . '" step="any" required/> </p>
+            <p><label>Attaque</label> : <input type="number" name="attaque_pokemon" value="' . $arrayStats[$y]["Attaque"] . '" step="any" required/> </p>
+            <p><label>Défense</label> : <input type="number" name="defense_pokemon" value="' . $arrayStats[$y]["Defense"] . '" step="any" required/> </p>    
+            <p><label>Attaque Spécial</label> : <input type="number" name="attaqueSpe_pokemon"= value="' . $arrayStats[$y]["2"] . '" step="any" required/> </p>
+            <p><label>Défense Spécial</label> : <input type="number" name="defenseSpe_pokemon" value="' . $arrayStats[$y]["3"] . '" step="any" required/> </p>
+
+            <p><label for="type">De quel catégorie est le pokemon?</label></p>';
         }
     }
 }
+
 
 //affiche une liste déroulante avec les différents type. De base son type est choisi
 function affiche_categorie_option($array, $bdd, $idPokemon) {

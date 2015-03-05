@@ -9,15 +9,14 @@ and open the template in the editor.
 */
 .contener
 {
-	background-repeat: no-repeat;
-	display: compact;
+    background-repeat: no-repeat;
+    display: compact;
 	
 }
 .ligne
 {
     width: 80%;
     height: 10em;
-    //background-color: yellow;
     margin-left: 6em;
     margin-top: 2.4em;
     text-align: center;
@@ -26,7 +25,6 @@ and open the template in the editor.
 {
     width: 33%;
     float: left;
-    //background-color: red;
     text-align: center;
     
 }
@@ -43,7 +41,13 @@ and open the template in the editor.
 .miseEnFormeSupprimer {
     margin-left:  2.5em;
     margin-right: 2.5em;
-    margin-bottom: 1em;
-    
+    margin-bottom: 1em;  
 }
-
+progress {    
+    background-color: #20201F;
+    border-radius: 20px;
+    padding: 5px;
+    float: right;
+    width: 50%;
+    height: 1.5em;
+} 
