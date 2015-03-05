@@ -240,24 +240,23 @@ function donne_idType_avec_nomType($bdd, $nomType) {
 
 //Affiche les informations du pokemon choisi pour une modification
 function affiche_pokemon_modification($arrayPokemon, $arrayStats, $idPokemon) {
-    //debug($arrayPokemon);
     $ligne = count($arrayPokemon);
     for ($i = 0; $i < $ligne; $i++) {
         if ($arrayPokemon[$i]["idPokemon"] == $idPokemon) {
             echo '<article>
              <form method="post" action="#">
                  <p>Modifier les informations de votre pokemon</p>
-                <p><label>Nom</label> : <input type="text" name="nom_pokemon" placeholder="Entrez le nouveau nom" required/>' . $arrayPokemon[$i]["Nom"] . '</p>
+                <p><label>Nom</label> : <input type="text" name="nom_pokemon" value="' . $arrayPokemon[$i]["Nom"] . '" required/></p>
                 <p><label>Image</label> : <input type="file" name="img_pokemon"/><img class="ImgagePokemon" src="' . $arrayPokemon[$i][2] . '" alt="Image du pokemon"/></p>
-                <p><label>Taille</label> : <input type="number" name="taille_pokemon" placeholder="' . $arrayPokemon[$i]["Taille"] . ' (m)" step="any" required/> </p>
-                <p><label>Poids</label> : <input type="number" name="poids_pokemon" placeholder="' . $arrayPokemon[$i]["Poids"] . ' (kg)" step="any" required/> </p>
+                <p><label>Taille</label> : <input type="number" name="taille_pokemon" value="' . $arrayPokemon[$i]["Taille"] . '" step="any" required/> (m) </p>
+                <p><label>Poids</label> : <input type="number" name="poids_pokemon" value="' . $arrayPokemon[$i]["Poids"] . '" step="any" required/> (kg) </p>
                     
-                <p><label>PV</label> : <input type="number" name="pv_pokemon" placeholder="' . $arrayStats[$i]["PV"] . '" step="any" required/> </p>
-                <p><label>Vitesse</label> : <input type="number" name="vitesse_pokemon" placeholder="' . $arrayStats[$i]["Vitesse"] . '" step="any" required/> </p>
-                <p><label>Attaque</label> : <input type="number" name="attaque_pokemon" placeholder="' . $arrayStats[$i]["Attaque"] . '" step="any" required/> </p>
-                <p><label>Défense</label> : <input type="number" name="defense_pokemon" placeholder="' . $arrayStats[$i]["Defense"] . '" step="any" required/> </p>    
-                <p><label>Attaque Spécial</label> : <input type="number" name="attaqueSpe_pokemon"= placeholder="' . $arrayStats[$i]["2"] . '" step="any" required/> </p>
-                <p><label>Défense Spécial</label> : <input type="number" name="defenseSpe_pokemon" placeholder="' . $arrayStats[$i]["3"] . '" step="any" required/> </p>
+                <p><label>PV</label> : <input type="number" name="pv_pokemon" value="' . $arrayStats[$i]["PV"] . '" step="any" required/> </p>
+                <p><label>Vitesse</label> : <input type="number" name="vitesse_pokemon" value="' . $arrayStats[$i]["Vitesse"] . '" step="any" required/> </p>
+                <p><label>Attaque</label> : <input type="number" name="attaque_pokemon" value="' . $arrayStats[$i]["Attaque"] . '" step="any" required/> </p>
+                <p><label>Défense</label> : <input type="number" name="defense_pokemon" value="' . $arrayStats[$i]["Defense"] . '" step="any" required/> </p>    
+                <p><label>Attaque Spécial</label> : <input type="number" name="attaqueSpe_pokemon"= value="' . $arrayStats[$i]["2"] . '" step="any" required/> </p>
+                <p><label>Défense Spécial</label> : <input type="number" name="defenseSpe_pokemon" value="' . $arrayStats[$i]["3"] . '" step="any" required/> </p>
         
                 <p><label for="type">De quel catégorie est le pokemon?</label></p>';
         }
