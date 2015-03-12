@@ -82,12 +82,13 @@ if (isset($_REQUEST['envoiRecherche'])) {
                                 <?php
                                 if (isset($_SESSION['rang'])) {
                                     echo autorisation_CRUD_pokemon($_SESSION['rang'], $chemin, $bdd);
-                                }
-                                ?>
-                                <form action="#" method="get">
+                                    echo '<form action="#" method="get">
                                     <input type="search" name="recherche"/> 
                                     <input type="submit" name="envoiRecherche" value="Recherche"/>
-                                </form>
+                                </form>';
+                                }
+                                ?>
+
                                 <ul class="nav navbar-nav navbar-right">
                                     <?php echo $affiche_lien; ?> 
                                 </ul>

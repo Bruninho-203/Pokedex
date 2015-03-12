@@ -120,7 +120,7 @@ function Statut() {
     }
 
     if (!isset($_SESSION['pseudo'])) {
-        echo 'Bonjour étranger';
+        echo 'Bonjour ï¿½tranger';
     }
 }
 
@@ -381,7 +381,9 @@ function ajouterPokemon($nom_pokemon, $img_pokemon, $type, $bdd) {
         $bdd->query('INSERT INTO appartenir(idPokemon, idType) values ("' . $id_pokemon . '", "' . $type . '")');
 
         $bdd->commit();
+        header("Location: ModifierPokemon.php?id=".$id_pokemon);
         return $bdd->lastInsertID();
+        
     } catch (Exception $e) { //en cas d'erreur
         //on annule la transation
         $bdd->rollback();
