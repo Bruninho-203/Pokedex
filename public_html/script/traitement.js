@@ -66,3 +66,5 @@ $("input[type=button]").click(function() {
 });
 
 $("input[rel='01']").click();
+
+

@@ -20,7 +20,6 @@ if (isset($_SESSION['conn']) && $_SESSION['conn']) {
     $pseudo = 'Vous êtes le maitre Pokemon: ' . $_SESSION['pseudo'];
 }
 
-
 if (isset($_REQUEST['message'])) {
     echo $_REQUEST['message'];
 }
@@ -60,6 +59,7 @@ if (isset($_REQUEST['envoiRecherche'])) {
 
         <script type="text/javascript" src="./bootstrap/js/jquery-1.11.1.min.js"></script>
         <script type="text/javascript" src="./bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="./script/traitement.js"></script>
     </head>
 
     <body class="container">
@@ -102,14 +102,14 @@ if (isset($_REQUEST['envoiRecherche'])) {
                             Modifier le pokemon
                         </h1>
                         <?php
-                        affiche_pokemon_modification(recupere_pokemon($bdd), recupere_pokemon_caracteristique($bdd), $_REQUEST['id']);
+                        affiche_pokemon_modification(recupere_pokemon($bdd), recupere_pokemon_caracteristique($bdd), $_REQUEST['id']);                    
                         affiche_categorie_option(recupere_categorie($bdd), $bdd, $_REQUEST['id']);
 
                         if (isset($_REQUEST['modifier'])) {
 
                             $listeChamps = [
                                 'idPokemon' => $_REQUEST['idPokemonCachee'],
-                                'image' => 'img/pokemon/' . $_REQUEST['img_pokemon'],
+                                'image' => 'img/pokemon/'.$_REQUEST['img_pokemon'],
                                 'type' => donne_idType_avec_nomType($bdd, $_REQUEST['type']),
                                 'nom' => $_REQUEST['nom_pokemon'],
                                 'taille' => $_REQUEST['taille_pokemon'],
@@ -121,12 +121,20 @@ if (isset($_REQUEST['envoiRecherche'])) {
                                 'attaqueSpe' => $_REQUEST['attaqueSpe_pokemon'],
                                 'defenseSpe' => $_REQUEST['defenseSpe_pokemon']
                             ];
+                            if(empty($listeChamps['image']))
+                            {
+                                $listeChamps['image']=getPokemonImageName($listeChamps['idPokemon'], $bdd);
+                            }
+                            
+                            debug($listeChamps['image']);
+                            debug($listeChamps['idPokemon']);
+                            
+                            //modifie_pokemon($listeChamps, $bdd);
 
-                            modifie_pokemon($listeChamps, $bdd);
                         }
                         ?>
 
-
+                        
                     </section>
                     <section class="col-sm-2">
                         <aside class="row-md-12">

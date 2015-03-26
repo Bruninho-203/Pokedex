@@ -33,6 +33,16 @@ and open the template in the editor.
     width: 3em;
     height: 4em;
 }
+.ImagePokemonModif
+{
+    width: 3em;
+    height: 4em;
+    float: right;
+}
+.Btn_modif
+{
+    float: right;
+}
 
 .top-buffer {
     margin: 6em;

@@ -22,6 +22,10 @@ if (isset($_REQUEST['message'])) {
     echo $_REQUEST['message'];
 }
 
+if (isset($_REQUEST['supprimerUtilisateur'])) {
+    header("Location: ./personnes.php");
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -89,8 +93,34 @@ if (isset($_REQUEST['message'])) {
                 <div class="top-buffer col-sm-12">
                     <section class="jumbotron col-sm-10">
                         <h1>
-                            Uilisateurs
+                            Utilisateurs
                         </h1>
+                        <div>
+                            <?php
+                            $affiche_utilisateur = recupere_Utilisateurs($bdd);
+
+
+                            for ($i = 0; $i < count($affiche_utilisateur); $i++) {
+                                echo '<ul>'
+                                . '<li>' . $affiche_utilisateur[$i]["Nom"]
+                                    . '<label>'
+                                        . '<form method="post" action="#">'
+                                            . '<label for ="supprimerUtilisateur" class="miseEnFormeSupprimer">Rang: ' . $affiche_utilisateur[$i]["NomRang"] . '</label>'
+                                            . '<input type="submit"  id="supprimerUtilisateur" name="supprimerUtilisateur" value="X">'
+                                            . '<input type="hidden" name="idUtilisateurCachee" value=' . $affiche_utilisateur[$i]["idUtilisateur"] . '>'
+                                        . '</form>'
+                                    . '</label>'
+                                . '</li>'
+                                . '</ul>';
+                            }
+
+                            if (isset($_REQUEST['supprimerUtilisateur'])) {
+
+                                $idUtilisateur = $_REQUEST['idUtilisateurCachee'];
+                                supprimer_Utilisateur($idUtilisateur ,$bdd);
+                            }
+                            ?>
+                        </div>
                     </section>
                     <section class="col-sm-2">
                         <aside class="row-md-12">

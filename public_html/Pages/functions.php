@@ -46,6 +46,7 @@ function debug($sObj = NULL) {
  * @return type : return an connection PDO
  */
 
+//****************************************************************************** connexion à la base de données
 function connexion($db_name, $host, $user, $pwd) {
     try {
         $bdd = new PDO('mysql:dbname=' . $db_name . ';host=' . $host, $user, $pwd);
@@ -57,7 +58,7 @@ function connexion($db_name, $host, $user, $pwd) {
 
     return $bdd;
 }
-
+//****************************************************************************** connexion sur le site
 function count_nb_user($bdd) {
     $request = $bdd->query("select count(pseudo) from utilisateurs");
     $request = $request->fetchAll();
@@ -103,7 +104,7 @@ function login_connection($users, $password, $bdd) {
     return $return;
 }
 
-/* * ******           Ajoute personne dans la base                         ******** */
+//****************************************************************************** Ajoute personne dans la base                         
 
 function ajout_personne($Nom, $Prenom, $MotDePasse, $Pseudo, $Email, $bdd) {
     $ajout = $bdd->prepare('insert into utilisateurs(Nom, Prenom,Mdp, Pseudo, idRang, Email) values("' . $Nom . '","' . $Prenom . '","' . $MotDePasse . '","' . $Pseudo . '","1","' . $Email . '")');
@@ -111,7 +112,7 @@ function ajout_personne($Nom, $Prenom, $MotDePasse, $Pseudo, $Email, $bdd) {
     return $bdd->lastInsertID();
 }
 
-/* * ** * * * Message pour l'utilisateur */
+//****************************************************************************** Message pour l'utilisateur 
 
 function Statut() {
 
@@ -136,7 +137,7 @@ function search_pokemon_nom($nomPokemon, $bdd){
     
 }
 
-/* * *************************************************************************** Type ******************************************** */
+//****************************************************************************** Type
 
 //Récupération des données de la table type. Ex: 1, Feu, img/feu.png
 function recupere_categorie($bdd) {
@@ -158,7 +159,7 @@ function affiche_categorie($array) {
     }
 }
 
-/* * ************************ Pokemon CATEGORIE ******************************************** */
+//******************************************************************************  Pokemon CATEGORIE
 
 function recupere_categorie_liste($bdd, $idType) {
     $request = $bdd->query('SELECT Nom, cheminImage, pokemon.idPokemon FROM pokemon LEFT JOIN appartenir ON pokemon.idPokemon = appartenir.idPokemon WHERE idType=' . $idType);
@@ -193,7 +194,7 @@ function affiche_categorie_aside($array, $nomtype) {
     }
 }
 
-//*************************  Caracteristique pokemon
+//******************************************************************************   Caracteristique pokemon
 //requete Sql pour récupérer un tableau avec les données des pokemons (Pv, Attaque, Defense, Attaque Spécial ,Defense Spécial, idPokemon)
 function recupere_pokemon_caracteristique($bdd) {
     $request = $bdd->query("SELECT * FROM caracteristique ORDER BY idPokemon");
@@ -214,7 +215,6 @@ function affiche_pokemon($arrayPokemon, $arrayStats, $idPokemon) {
                     <p><label>Poids</label> : ' . $arrayPokemon[$i]["Poids"] . ' (kg)</p>';
         }
     }
-    //debug($arrayStats);
     $ligne = count($arrayStats);
     for ($i = 0; $i < $ligne; $i++) {
         if ($arrayStats[$i]["idPokemon"] == $idPokemon) {
@@ -232,7 +232,7 @@ function affiche_pokemon($arrayPokemon, $arrayStats, $idPokemon) {
     }
 }
 
-//*************************  Modification
+//****************************************************************************** Modification
 function recupere_pokemon_modification($bdd, $idPokemon) {
     $request = $bdd->query("SELECT Nom, cheminImage FROM pokemon WHERE idPokemon =" . $idPokemon);
     return $request->fetchAll();
@@ -250,10 +250,12 @@ function donne_idType_avec_nomType($bdd, $nomType) {
     echo $request;
 }
 
-//Affiche les informations du pokemon choisi pour une modification
+//Affiche les informations du pokemon choisi pour une modification & avoir une valeur par défaut dans l'input file
+//http://www.developpez.net/forums/d26063/webmasters-developpement-web/balisage-x-html-validation-w3c/default-input-file/
 function affiche_pokemon_modification($arrayPokemon, $arrayStats, $idPokemon) {
     $ligne = count($arrayPokemon);
     $ligneStat = count($arrayStats);
+    $DoThis = "document.getElementById('hiddenfile').click();getFileName()";
     
     for ($i = 0; $i < $ligne; $i++) {
         if ($arrayPokemon[$i]["idPokemon"] == $idPokemon) {
@@ -261,7 +263,14 @@ function affiche_pokemon_modification($arrayPokemon, $arrayStats, $idPokemon) {
              <form method="post" action="#">
                  <p>Modifier les informations de votre pokemon</p>
                 <p><label>Nom</label> : <input type="text" name="nom_pokemon" value="' . $arrayPokemon[$i]["Nom"] . '" required/></p>
-                <p><label>Image</label> : <input type="file" name="img_pokemon"/><img class="ImgagePokemon" src="' . $arrayPokemon[$i][2] . '" alt="Image du pokemon"/></p>
+                    
+                <p>               
+                    <label>Image</label> : <img class="ImagePokemonModif" src="' . $arrayPokemon[$i][2] . '" alt="Image du pokemon"/>
+                    <input type="file" name="img_pokemon" id="hiddenfile" style="visibility:hidden" />
+                    <input type="text" name="chemin_image_pokemon" style="visibility:hidden" size="40" value="' . $arrayPokemon[$i][2] . '" disabled/> 
+                    <input type="button" class="Btn_modif" name="Recherche" value="Browse..." onclick="'.$DoThis.'"/>   
+                <p>
+                          
                 <p><label>Taille</label> : <input type="number" name="taille_pokemon" value="' . $arrayPokemon[$i]["Taille"] . '" step="any" required/> (m) </p>
                 <p><label>Poids</label> : <input type="number" name="poids_pokemon" value="' . $arrayPokemon[$i]["Poids"] . '" step="any" required/> (kg) </p>';
         }
@@ -279,7 +288,6 @@ function affiche_pokemon_modification($arrayPokemon, $arrayStats, $idPokemon) {
         }
     }
 }
-
 
 //affiche une liste déroulante avec les différents type. De base son type est choisi
 function affiche_categorie_option($array, $bdd, $idPokemon) {
@@ -304,8 +312,7 @@ function affiche_categorie_option($array, $bdd, $idPokemon) {
 }
 
 function modifie_pokemon($listeChamps, $bdd) {
-
-
+        
     $request = 'UPDATE pokemon SET Nom="' . $listeChamps['nom'] . '",cheminImage="' . $listeChamps['image'] . '",Taille="' . $listeChamps['taille'] . '", Poids="' . $listeChamps['poids'] . '" WHERE idPokemon="' . $listeChamps['idPokemon'] . '" ';
     $statement = $bdd->prepare($request);
     $statement->execute();
@@ -314,7 +321,7 @@ function modifie_pokemon($listeChamps, $bdd) {
     $request = 'UPDATE appartenir SET idType="' . $listeChamps['type'] . '" WHERE idPokemon="' . $listeChamps['idPokemon'] . '"';
     $statement = $bdd->prepare($request);
     $statement->execute();
-    echo $statement->rowCount() . " Type records UPDATED successfully ";
+    echo $statement->rowCount() . " Type records UPDATED successfully || ";
 
 
     $request = 'UPDATE caracteristique SET PV="' . $listeChamps['pv'] . '", Attaque="' . $listeChamps['attaque'] . '",Defense="' . $listeChamps['defense'] . '"'
@@ -326,7 +333,7 @@ function modifie_pokemon($listeChamps, $bdd) {
     echo $statement->rowCount() . " Informations records UPDATED successfully ";
 }
 
-/* * ******************************** Supprimer */
+//******************************************************************************  Supprimer 
 
 //Récupere les informations des pokemons dans une liste : (id, nom, Chemin)
 function recupere_pokemon($bdd) {
@@ -347,7 +354,7 @@ function supprimerPokemon($idPokemon, $bdd) {
     return $bdd->exec($request);
 }
 
-/* * ********** Liste déroulante menu  */
+//****************************************************************************** Liste déroulante menu  
 
 function affiche_categorie_liste_deroulante($array, $TestChemin) {
 //debug($array);
@@ -366,7 +373,7 @@ function affiche_categorie_liste_deroulante($array, $TestChemin) {
     return $affichage;
 }
 
-/* * ********** Créer un pokemon  */
+//****************************************************************************** Créer un pokemon
 
 function ajouterPokemon($nom_pokemon, $img_pokemon, $type, $bdd) {
 
@@ -401,7 +408,6 @@ function ajouterPokemon($nom_pokemon, $img_pokemon, $type, $bdd) {
 function recupereIDavecNomType($nom_type, $bdd) {
     $request = $bdd->query('SELECT idType FROM type WHERE NomType=' . $nom_type);
     return $request->fetchAll();
-    debug($request);
 }
 
 function affiche_categorie_option_creer($array) {
@@ -414,7 +420,19 @@ function affiche_categorie_option_creer($array) {
     }
 }
 
-/* * ********** Privilège et droit */
+//****************************************************************************** Gestion des utilisateurs
+//Récupère tous les utilisateurs et indique : nom, prenom, pseudo et le rang
+function recupere_Utilisateurs($bdd) {
+    $request = $bdd->query('SELECT idUtilisateur, Nom, Prenom, Pseudo, NomRang FROM utilisateurs NATURAL JOIN rangs ORDER BY NomRang');
+    return $request->fetchAll();
+}
+
+function supprimer_Utilisateur($idUtilisateur, $bdd) {
+    $request = "DELETE FROM utilisateurs WHERE idUtilisateur=" . $idUtilisateur;
+    return $bdd->exec($request);
+}
+
+//****************************************************************************** Privilège et droit
 
 //Contrôle sur l'activation des liens selon le statut de l'utilisateur (Connect/Disconnect)
 function affiche_lien($chemin) {
